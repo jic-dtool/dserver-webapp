@@ -10,6 +10,11 @@ This change log uses principles from `keep a changelog <http://keepachangelog.co
 Added
 ^^^^^
 
+- Approval of command-line logins (``dtool dserver login``): opening the webapp
+  with ``?user_code=...`` shows, after logging in, a dialog to approve or deny
+  the login (OAuth 2.0 device authorization flow of the dserver OAuth2 token
+  plugin). Configure the endpoint with ``VUE_APP_OAUTH2_DEVICE_URL`` (default
+  ``${serverUrl}/auth/oauth2/device``).
 - Customizable landing page.
 - Logout button.
 - Search result pagniation.

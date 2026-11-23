@@ -63,6 +63,9 @@
 
     <!-- Authenticated View - Main Application -->
     <template v-else>
+      <!-- Approval of a pending command-line login (dtool dserver login) -->
+      <DeviceApproval />
+
       <!-- App Bar -->
       <v-app-bar color="grey-lighten-3" elevation="2">
         <v-app-bar-nav-icon class="d-md-none" @click="drawer = !drawer" />
@@ -377,6 +380,8 @@ import UserMenu from "./components/UserMenu.vue";
 import NotificationSnackbar from "./components/NotificationSnackbar.vue";
 import UserManagement from "./components/UserManagement.vue";
 import DatasetDependencies from "./components/DatasetDependencies.vue";
+import DeviceApproval from "./components/DeviceApproval.vue";
+import { capturePendingUserCode } from "./services/deviceApproval";
 import { useStore } from "./store";
 import { useAuthStore } from "./stores/auth";
 import { useServerHealthStore } from "./stores/serverHealth";
@@ -834,6 +839,10 @@ watch(
 
 // Initialize the app
 onMounted(async () => {
+  // Remember a command-line login code (?user_code=...) across the login
+  // redirect, before auth.initialize() cleans up the URL.
+  capturePendingUserCode();
+
   // First check server health
   const serverHealthy = await serverHealth.initialize();
 

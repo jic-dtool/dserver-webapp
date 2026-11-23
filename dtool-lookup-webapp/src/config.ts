@@ -17,4 +17,11 @@ export const authLogoutUrl: string =
   process.env.VUE_APP_DTOOL_LOOKUP_SERVER_AUTH_LOGOUT_URL ||
   `${serverUrl}/auth/logout`;
 
+/**
+ * Device authorization endpoints of the dserver OAuth2 token plugin, used to
+ * approve command-line logins (`dtool dserver login`).
+ */
+export const oauth2DeviceUrl: string =
+  process.env.VUE_APP_OAUTH2_DEVICE_URL || `${serverUrl}/auth/oauth2/device`;
+
 export const authEnabled = process.env.VUE_APP_AUTH_ENABLED !== "false";
