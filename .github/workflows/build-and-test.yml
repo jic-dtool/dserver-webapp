@@ -33,7 +33,7 @@ jobs:
       - name: Check out dserver-client-js
         uses: actions/checkout@v4
         with:
-          repository: livMatS/dserver-client-js
+          repository: jic-dtool/dserver-client-js
           path: dserver-client-js
 
       - name: Set up Node ${{ matrix.node-version }}
