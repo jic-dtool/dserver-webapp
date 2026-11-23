@@ -259,7 +259,7 @@ const fourthContainerResources: ResourceLink[] = process.env
   : [
       {
         text: "dtool-lookup-webapp repository",
-        url: "https://github.com/livMatS/dtool-lookup-webapp",
+        url: "https://github.com/jic-dtool/dtool-lookup-webapp",
       },
       {
         text: "dserver REST API documentation",
