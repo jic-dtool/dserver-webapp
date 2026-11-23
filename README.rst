@@ -40,6 +40,14 @@ Create a `.env` file in the `dtool-lookup-webapp` directory with the following c
 
 For deployment, replace these URLs with the actual endpoints of the lookup server and the token generator.
 
+Command-line logins (``dtool dserver login``) are approved in the webapp: the
+command shows a link to the webapp with ``?user_code=...``, which opens an
+approval dialog after logging in. The dialog talks to the device authorization
+endpoints of the dserver OAuth2 token plugin, by default
+``${VUE_APP_DTOOL_LOOKUP_SERVER_URL}/auth/oauth2/device``; override with::
+
+    VUE_APP_OAUTH2_DEVICE_URL="https://dserver.example.org/auth/oauth2/device"
+
 Customization options for the landing page are available through the following environment variables in the `.env` file:
 
 .. code-block:: text

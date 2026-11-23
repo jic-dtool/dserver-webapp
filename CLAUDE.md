@@ -43,6 +43,7 @@ re-running `npm install` / rebuilding. Key vars:
 - `VUE_APP_DTOOL_LOOKUP_SERVER_URL` — dserver base URL (default `http://localhost:5000`)
 - `VUE_APP_DTOOL_LOOKUP_SERVER_TOKEN_GENERATOR_URL` — OAuth2 token endpoint (default `${serverUrl}/auth/token`)
 - `VUE_APP_DTOOL_LOOKUP_SERVER_AUTH_LOGOUT_URL` — logout endpoint (default `${serverUrl}/auth/logout`)
+- `VUE_APP_OAUTH2_DEVICE_URL` — device authorization endpoints of the OAuth2 token plugin, for approving command-line logins (default `${serverUrl}/auth/oauth2/device`)
 - `VUE_APP_AUTH_ENABLED` — set to `"false"` to run in **no-auth mode** (default: auth on). Exposed as `authEnabled` from `@/config`; see auth flow.
 - Landing-page and user-menu customization vars (see `README.rst`)
 
