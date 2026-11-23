@@ -2,7 +2,7 @@ name: dtool-lookup-webapp-build-and-test
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
 
 permissions:
