@@ -1,8 +1,8 @@
 dtool lookup webapp
 ===================
 
-.. image:: https://github.com/livMatS/dtool-lookup-webapp/actions/workflows/build-and-test.yml/badge.svg
-    :target: https://github.com/livMatS/dtool-lookup-webapp/actions/workflows/build-and-test.yml
+.. image:: https://github.com/jic-dtool/dtool-lookup-webapp/actions/workflows/build-and-test.yml/badge.svg
+    :target: https://github.com/jic-dtool/dtool-lookup-webapp/actions/workflows/build-and-test.yml
     :alt: dtool-lookup-webapp build and test
 
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
@@ -19,7 +19,7 @@ Dependencies
 
 The web application requires two other web services:
 
-1. dtool-lookup-server: https://github.com/jic-dtool/dtool-lookup-server - Provides a means to search and display dataset metadata.
+1. dtool-lookup-server: https://github.com/jic-dtool/dservercore - Provides a means to search and display dataset metadata.
 2. token-generator-ldap: https://github.com/jic-dtool/token-generator-ldap - Facilitates user authentication.
 
 Setup

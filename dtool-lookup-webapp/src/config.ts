@@ -24,4 +24,7 @@ export const authLogoutUrl: string =
 export const oauth2DeviceUrl: string =
   process.env.VUE_APP_OAUTH2_DEVICE_URL || `${serverUrl}/auth/oauth2/device`;
 
+export const oauth2LoginUrl: string =
+  process.env.VUE_APP_OAUTH2_LOGIN_URL || `${serverUrl}/auth/login`;
+
 export const authEnabled = process.env.VUE_APP_AUTH_ENABLED !== "false";
