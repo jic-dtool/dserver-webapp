@@ -1,14 +1,14 @@
 <template>
   <div v-if="dataset" class="dataset-summary">
-    <!-- URI Section -->
+    <!-- UUID Section -->
     <v-card variant="outlined" class="mb-4" rounded="lg">
       <v-card-item density="compact">
         <template #prepend>
-          <v-icon size="small" color="primary">mdi-link-variant</v-icon>
+          <v-icon size="small" color="primary">mdi-identifier</v-icon>
         </template>
-        <v-card-title class="text-body-2 font-weight-medium">URI</v-card-title>
+        <v-card-title class="text-body-2 font-weight-medium">UUID</v-card-title>
         <template #append>
-          <v-menu location="bottom end" :close-on-content-click="false">
+          <v-tooltip location="bottom end">
             <template #activator="{ props }">
               <v-btn
                 v-bind="props"
@@ -16,46 +16,23 @@
                 variant="tonal"
                 color="primary"
                 prepend-icon="mdi-content-copy"
+                @click="copyToClipboard(displayUri)"
               >
-                Copy
+                Copy URI
               </v-btn>
             </template>
-            <v-card min-width="360" rounded="lg">
-              <v-card-text class="text-body-2 pb-2">
-                Copy this dataset to your working directory:
-              </v-card-text>
-              <v-card-text class="pt-0">
-                <v-text-field
-                  :model-value="copy_command"
-                  readonly
-                  density="compact"
-                  variant="outlined"
-                  hide-details
-                  rounded="lg"
-                  bg-color="grey-lighten-4"
-                >
-                  <template #append-inner>
-                    <v-btn
-                      icon="mdi-content-copy"
-                      size="small"
-                      variant="text"
-                      @click="copyToClipboard(copy_command)"
-                    />
-                  </template>
-                </v-text-field>
-                <div
-                  v-if="isDserverUri"
-                  class="text-caption text-medium-emphasis mt-2"
-                >
-                  Log in once with <code>{{ login_command }}</code>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-menu>
+            <div class="text-caption">
+              <code>{{ displayUri }}</code>
+              <div v-if="isDserverUri">
+                e.g. <code>dtool cp {{ displayUri }} .</code> after
+                <code>{{ login_command }}</code>
+              </div>
+            </div>
+          </v-tooltip>
         </template>
       </v-card-item>
       <v-card-text class="pt-0">
-        <code class="uri-text text-body-2">{{ displayUri }}</code>
+        <code class="uri-text text-body-2">{{ dataset.uuid }}</code>
       </v-card-text>
     </v-card>
 
@@ -369,11 +346,6 @@ const isDserverUri = computed(() => displayUri.value.startsWith("dserver://"));
 
 const login_command = loginCommand();
 
-const copy_command = computed(() => {
-  if (!dataset.value) return "";
-  return "dtool cp " + displayUri.value + " .";
-});
-
 const currentTags = computed<string[]>(() => {
   if (store.current_dataset_tags && store.current_dataset_tags.tags) {
     return store.current_dataset_tags.tags;
@@ -420,7 +392,7 @@ function cancelEditAnnotation(): void {
 async function copyToClipboard(text: string): Promise<void> {
   try {
     await navigator.clipboard.writeText(text);
-    notifications.success("Copied to clipboard");
+    notifications.success(`Copied ${text}`);
   } catch (err) {
     console.error("Failed to copy:", err);
     notifications.error("Failed to copy to clipboard");

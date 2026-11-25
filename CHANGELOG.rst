@@ -20,6 +20,8 @@ Added
   line with the address of the webapp (``dtool dserver login <address>``).
   The copied ``dtool cp`` commands use ``dserver://`` URIs with the webapp's
   address and show the login command.
+- *Copy URI* buttons for storage locations and datasets, which copy the
+  ``dserver://`` URI (e.g. for ``dtool ls`` or ``dtool cp``).
 - Customizable landing page.
 - Logout button.
 - Search result pagniation.
@@ -31,6 +33,9 @@ Added
 
 Changed
 ^^^^^^^
+
+- The Locations filter is at the top of the sidebar and always open.
+- Datasets show their UUID instead of their URI; *Copy URI* copies the URI.
 
 - Updated from bootstrap-vue-3 to bootstap-vue-next
 - Adapted routes to remodeled dserver REST API.
