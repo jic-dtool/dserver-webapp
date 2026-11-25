@@ -15,6 +15,11 @@ Added
   the login (OAuth 2.0 device authorization flow of the dserver OAuth2 token
   plugin). Configure the endpoint with ``VUE_APP_OAUTH2_DEVICE_URL`` (default
   ``${serverUrl}/auth/oauth2/device``).
+- The page names its dserver (``<meta name="dserver-url">``, from
+  ``VUE_APP_DTOOL_LOOKUP_SERVER_URL``), so users can log in from the command
+  line with the address of the webapp (``dtool dserver login <address>``).
+  The copied ``dtool cp`` commands use ``dserver://`` URIs with the webapp's
+  address and show the login command.
 - Customizable landing page.
 - Logout button.
 - Search result pagniation.
@@ -43,6 +48,8 @@ Fixed
 ^^^^^
 
 - No search box on login screen.
+- ``dserver://`` URIs of datasets and storage locations in copied ``dtool``
+  commands lacked the storage location or the server.
 
 Security
 ^^^^^^^^

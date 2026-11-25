@@ -172,6 +172,9 @@
                     <code v-if="baseUri.canRegister" class="text-caption">{{
                       getDtoolCommand(baseUri.uri)
                     }}</code>
+                    <div v-if="baseUri.canRegister">
+                      after <code>{{ loginCommand() }}</code>
+                    </div>
                   </div>
                 </v-tooltip>
               </template>
@@ -247,6 +250,7 @@ import { useStore } from "@/store";
 import { useAuthStore } from "@/stores/auth";
 import { useNotificationStore } from "@/stores/notifications";
 import { authEnabled } from "@/config";
+import { dserverUri, loginCommand } from "@/utils/dtoolCommand";
 
 const emit = defineEmits<{
   (e: "logoutAction"): void;
@@ -318,9 +322,8 @@ async function copyTokenToClipboard(): Promise<void> {
 }
 
 function getDtoolCommand(baseUri: string): string {
-  // Convert base URI like "s3://bucket-name" to dserver format "s3/bucket-name"
-  const dserverPath = baseUri.replace("://", "/");
-  return `dtool cp <dataset-uri> dserver://${dserverPath}`;
+  // After `dtool dserver login <address of this web interface>`
+  return `dtool cp <dataset-uri> ${dserverUri(baseUri) ?? baseUri}`;
 }
 
 async function copyDtoolCommand(baseUri: string): Promise<void> {

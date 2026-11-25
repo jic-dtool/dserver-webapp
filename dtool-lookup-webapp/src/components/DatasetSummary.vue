@@ -43,6 +43,12 @@
                     />
                   </template>
                 </v-text-field>
+                <div
+                  v-if="isDserverUri"
+                  class="text-caption text-medium-emphasis mt-2"
+                >
+                  Log in once with <code>{{ login_command }}</code>
+                </div>
               </v-card-text>
             </v-card>
           </v-menu>
@@ -329,6 +335,7 @@ import { useStore } from "@/store";
 import { useNotificationStore } from "@/stores/notifications";
 import { dserverApi } from "@/services/dserverApi";
 import type { Dataset } from "@/types";
+import { dserverUri, loginCommand } from "@/utils/dtoolCommand";
 
 const store = useStore();
 const notifications = useNotificationStore();
@@ -348,21 +355,19 @@ const dataset = computed<Dataset | null>(() => {
   return store.current_dataset;
 });
 
+// With the signed URL plugin, the dtool command line accesses datasets
+// through dserver (dtool-dserver), addressed by this web interface's host.
 const displayUri = computed(() => {
   if (!dataset.value) return "";
   if (store.hasSignedUrlPlugin) {
-    const lookupUrl = store.lookup_url;
-    if (lookupUrl) {
-      try {
-        const url = new URL(lookupUrl);
-        return `dserver://${url.host}/${dataset.value.uuid}`;
-      } catch {
-        return dataset.value.uri;
-      }
-    }
+    return dserverUri(dataset.value.uri) ?? dataset.value.uri;
   }
   return dataset.value.uri;
 });
+
+const isDserverUri = computed(() => displayUri.value.startsWith("dserver://"));
+
+const login_command = loginCommand();
 
 const copy_command = computed(() => {
   if (!dataset.value) return "";
