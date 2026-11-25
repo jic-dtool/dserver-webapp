@@ -36,7 +36,6 @@ Changed
 
 - The Locations filter is at the top of the sidebar and always open.
 - Datasets show their UUID instead of their URI; *Copy URI* copies the URI.
-
 - Updated from bootstrap-vue-3 to bootstap-vue-next
 - Adapted routes to remodeled dserver REST API.
 
