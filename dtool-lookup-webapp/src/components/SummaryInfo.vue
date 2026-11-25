@@ -94,25 +94,25 @@
             <v-list-item-title class="text-body-2" :title="base_uri">
               {{ base_uri }}
             </v-list-item-title>
-            <div class="d-flex align-center mt-1">
+            <template #append>
               <v-chip size="x-small" color="grey-lighten-1" variant="flat">
                 {{ summary_info.datasets_per_base_uri[base_uri] }}
               </v-chip>
-              <v-spacer />
               <v-tooltip location="bottom">
                 <template #activator="{ props }">
                   <v-btn
                     v-bind="props"
+                    icon="mdi-content-copy"
                     size="x-small"
-                    variant="tonal"
+                    variant="text"
                     color="primary"
-                    prepend-icon="mdi-content-copy"
+                    class="ml-1"
+                    aria-label="Copy URI"
                     @click.stop="copyUri(locationUri(base_uri))"
-                  >
-                    Copy URI
-                  </v-btn>
+                  />
                 </template>
                 <div class="text-caption">
+                  <div class="font-weight-medium">Copy URI</div>
                   <code>{{ locationUri(base_uri) }}</code>
                   <div v-if="isDserverUri(locationUri(base_uri))">
                     e.g. <code>dtool ls {{ locationUri(base_uri) }}</code> after
@@ -120,7 +120,7 @@
                   </div>
                 </div>
               </v-tooltip>
-            </div>
+            </template>
           </v-list-item>
         </v-list>
       </div>
