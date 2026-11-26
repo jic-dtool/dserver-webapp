@@ -43,8 +43,8 @@ Changed
   above the dataset counts and the other filters. Datasets of the selected
   locations are shown; all are selected by default, and at least one stays
   selected.
-- Datasets show their UUID below their name, with a copy icon that copies
-  the URI (instead of a separate URI card).
+- Datasets show their UUID below their name (instead of a separate URI
+  card); clicking the dataset icon copies the URI.
 - Updated from bootstrap-vue-3 to bootstap-vue-next
 - Adapted routes to remodeled dserver REST API.
 

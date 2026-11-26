@@ -4,30 +4,27 @@
     <v-card variant="flat" class="mb-4">
       <v-card-item>
         <template #prepend>
-          <v-avatar color="primary" variant="tonal" size="48" rounded="lg">
-            <v-icon size="24">mdi-database</v-icon>
-          </v-avatar>
-        </template>
-        <v-card-title class="text-h6 font-weight-medium">
-          {{ dataset.name }}
-        </v-card-title>
-        <v-card-subtitle class="text-body-2 d-flex align-center">
-          <span class="uuid" :title="dataset.uuid">{{ dataset.uuid }}</span>
-          <v-tooltip location="bottom">
+          <!-- Clicking the dataset icon copies its URI. -->
+          <v-tooltip location="bottom start">
             <template #activator="{ props }">
-              <v-btn
+              <v-avatar
                 v-bind="props"
-                icon="mdi-content-copy"
-                size="x-small"
-                variant="text"
                 color="primary"
-                class="ml-1"
+                variant="tonal"
+                size="72"
+                rounded="lg"
+                class="copy-uri"
+                role="button"
+                tabindex="0"
                 aria-label="Copy URI"
                 @click="copyUri()"
-              />
+                @keydown.enter="copyUri()"
+              >
+                <v-icon size="40">mdi-database</v-icon>
+              </v-avatar>
             </template>
             <div class="text-caption">
-              <div class="font-weight-medium">Copy URI</div>
+              <div class="font-weight-medium">Click to copy the URI</div>
               <code>{{ displayUri }}</code>
               <div v-if="isDserverUri">
                 e.g. <code>dtool cp {{ displayUri }} .</code> after
@@ -35,6 +32,13 @@
               </div>
             </div>
           </v-tooltip>
+        </template>
+        <v-card-title class="text-h6 font-weight-medium">
+          {{ dataset.name }}
+        </v-card-title>
+        <v-card-subtitle class="text-body-2">
+          <v-icon size="x-small" class="mr-1">mdi-identifier</v-icon>
+          <span class="uuid">{{ dataset.uuid }}</span>
         </v-card-subtitle>
         <v-card-subtitle class="text-body-2">
           <v-icon size="x-small" class="mr-1">mdi-account</v-icon>
@@ -165,5 +169,9 @@ function filesize(bytes: number): string {
 .uuid {
   font-family: "Roboto Mono", monospace;
   font-size: 12px;
+}
+
+.copy-uri {
+  cursor: pointer;
 }
 </style>
