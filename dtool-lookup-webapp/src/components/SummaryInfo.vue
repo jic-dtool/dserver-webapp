@@ -25,6 +25,81 @@
 
     <!-- Content -->
     <div v-else>
+      <!-- Locations, always open: the storage locations whose datasets are
+           shown (all by default), with their dserver URIs for the command
+           line -->
+      <div
+        v-if="summary_info?.base_uris && summary_info.base_uris.length > 0"
+        class="locations border-b"
+      >
+        <div
+          class="d-flex align-center px-6 pt-4 pb-1 text-body-2 font-weight-medium"
+        >
+          <v-icon start size="small">mdi-folder-marker</v-icon>
+          Locations
+          <v-spacer />
+          <span
+            v-if="store.base_uris.length > 0"
+            class="text-caption text-primary"
+          >
+            {{ store.base_uris.length }} of {{ summary_info.base_uris.length }}
+          </span>
+        </div>
+        <v-list
+          density="compact"
+          class="pt-0 pb-2 px-4"
+          max-height="300"
+          style="overflow-y: auto"
+        >
+          <v-list-item
+            v-for="base_uri in summary_info.base_uris"
+            :key="base_uri"
+            class="px-0"
+            @click="toggleBaseUri(base_uri)"
+          >
+            <template #prepend>
+              <v-checkbox-btn
+                :model-value="isLocationSelected(base_uri)"
+                :disabled="isOnlySelectedLocation(base_uri)"
+                density="compact"
+                hide-details
+                @click.stop="toggleBaseUri(base_uri)"
+              />
+            </template>
+            <v-list-item-title class="text-body-2" :title="base_uri">
+              {{ base_uri }}
+            </v-list-item-title>
+            <template #append>
+              <v-chip size="x-small" color="grey-lighten-1" variant="flat">
+                {{ summary_info.datasets_per_base_uri[base_uri] }}
+              </v-chip>
+              <v-tooltip location="bottom">
+                <template #activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    icon="mdi-content-copy"
+                    size="x-small"
+                    variant="text"
+                    color="primary"
+                    class="ml-1"
+                    aria-label="Copy URI"
+                    @click.stop="copyUri(locationUri(base_uri))"
+                  />
+                </template>
+                <div class="text-caption">
+                  <div class="font-weight-medium">Copy URI</div>
+                  <code>{{ locationUri(base_uri) }}</code>
+                  <div v-if="isDserverUri(locationUri(base_uri))">
+                    e.g. <code>dtool ls {{ locationUri(base_uri) }}</code> after
+                    <code>{{ login_command }}</code>
+                  </div>
+                </div>
+              </v-tooltip>
+            </template>
+          </v-list-item>
+        </v-list>
+      </div>
+
       <!-- Dataset counts summary -->
       <div class="pa-4 border-b">
         <div class="d-flex justify-space-between align-center mb-2">
@@ -52,7 +127,7 @@
         </v-btn>
       </div>
 
-      <!-- Filters -->
+      <!-- Further filters -->
       <v-expansion-panels variant="accordion" multiple>
         <!-- Tags Filter -->
         <v-expansion-panel
@@ -101,63 +176,6 @@
                 <template #append>
                   <v-chip size="x-small" color="grey-lighten-1" variant="flat">
                     {{ summary_info.datasets_per_tag[tag] }}
-                  </v-chip>
-                </template>
-              </v-list-item>
-            </v-list>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-
-        <!-- Locations Filter -->
-        <v-expansion-panel
-          v-if="summary_info?.base_uris && summary_info.base_uris.length > 0"
-        >
-          <v-expansion-panel-title class="text-body-2 font-weight-medium">
-            <v-icon start size="small">mdi-folder-marker</v-icon>
-            Locations
-            <template #actions="{ expanded }">
-              <v-badge
-                v-if="store.base_uris.length > 0"
-                :content="store.base_uris.length"
-                color="primary"
-                inline
-                class="mr-2"
-              />
-              <v-icon
-                :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-              />
-            </template>
-          </v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <v-list
-              density="compact"
-              class="py-0"
-              max-height="200"
-              style="overflow-y: auto"
-            >
-              <v-list-item
-                v-for="(base_uri, index) in summary_info.base_uris"
-                :key="index"
-                @click="toggleBaseUri(base_uri)"
-                class="px-0"
-              >
-                <template #prepend>
-                  <v-checkbox-btn
-                    :model-value="store.base_uris.includes(base_uri)"
-                    density="compact"
-                    hide-details
-                    @click.stop="toggleBaseUri(base_uri)"
-                  />
-                </template>
-                <v-list-item-title
-                  class="text-body-2 text-truncate"
-                  style="max-width: 140px"
-                >
-                  {{ base_uri }}
-                </v-list-item-title>
-                <template #append>
-                  <v-chip size="x-small" color="grey-lighten-1" variant="flat">
-                    {{ summary_info.datasets_per_base_uri[base_uri] }}
                   </v-chip>
                 </template>
               </v-list-item>
@@ -285,12 +303,17 @@ import { ref, onMounted } from "vue";
 import { useStore } from "@/store";
 import { dserverApi } from "@/services/dserverApi";
 import type { SummaryInfo } from "@/services/dserverApi";
+import { useNotificationStore } from "@/stores/notifications";
+import { dserverUri, loginCommand } from "@/utils/dtoolCommand";
 
 const emit = defineEmits<{
   (e: "start-search"): void;
 }>();
 
 const store = useStore();
+const notifications = useNotificationStore();
+
+const login_command = loginCommand();
 
 const summary_info = ref<SummaryInfo | null>(null);
 const loading = ref(true);
@@ -329,12 +352,55 @@ function toggleTag(tag: string): void {
   searchDatasets();
 }
 
+// With the signed URL plugin, the dtool command line accesses storage
+// locations through dserver (dtool-dserver).
+function locationUri(base_uri: string): string {
+  if (store.hasSignedUrlPlugin) {
+    return dserverUri(base_uri) ?? base_uri;
+  }
+  return base_uri;
+}
+
+function isDserverUri(uri: string): boolean {
+  return uri.startsWith("dserver://");
+}
+
+async function copyUri(uri: string): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(uri);
+    notifications.success(`Copied ${uri}`);
+  } catch (error) {
+    console.error("Failed to copy:", error);
+    notifications.error("Failed to copy to clipboard");
+  }
+}
+
+// Locations: datasets of the selected locations are shown. No filter
+// (store.base_uris empty) means all locations are selected, the default.
+function selectedLocations(): string[] {
+  return store.base_uris.length > 0
+    ? store.base_uris
+    : (summary_info.value?.base_uris ?? []);
+}
+
+function isLocationSelected(base_uri: string): boolean {
+  return selectedLocations().includes(base_uri);
+}
+
+// At least one location stays selected.
+function isOnlySelectedLocation(base_uri: string): boolean {
+  const selected = selectedLocations();
+  return selected.length === 1 && selected[0] === base_uri;
+}
+
 function toggleBaseUri(base_uri: string): void {
-  store.updateBaseUris(
-    store.base_uris.includes(base_uri)
-      ? store.base_uris.filter((u) => u !== base_uri)
-      : [...store.base_uris, base_uri],
-  );
+  if (isOnlySelectedLocation(base_uri)) return;
+  const selected = selectedLocations();
+  const next = selected.includes(base_uri)
+    ? selected.filter((u) => u !== base_uri)
+    : [...selected, base_uri];
+  const all = summary_info.value?.base_uris ?? [];
+  store.updateBaseUris(next.length === all.length ? [] : next);
   searchDatasets();
 }
 

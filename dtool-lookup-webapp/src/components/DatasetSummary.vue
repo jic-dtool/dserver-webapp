@@ -1,14 +1,14 @@
 <template>
   <div v-if="dataset" class="dataset-summary">
-    <!-- URI Section -->
+    <!-- UUID Section -->
     <v-card variant="outlined" class="mb-4" rounded="lg">
       <v-card-item density="compact">
         <template #prepend>
-          <v-icon size="small" color="primary">mdi-link-variant</v-icon>
+          <v-icon size="small" color="primary">mdi-identifier</v-icon>
         </template>
-        <v-card-title class="text-body-2 font-weight-medium">URI</v-card-title>
+        <v-card-title class="text-body-2 font-weight-medium">UUID</v-card-title>
         <template #append>
-          <v-menu location="bottom end" :close-on-content-click="false">
+          <v-tooltip location="bottom end">
             <template #activator="{ props }">
               <v-btn
                 v-bind="props"
@@ -16,40 +16,23 @@
                 variant="tonal"
                 color="primary"
                 prepend-icon="mdi-content-copy"
+                @click="copyToClipboard(displayUri)"
               >
-                Copy
+                Copy URI
               </v-btn>
             </template>
-            <v-card min-width="360" rounded="lg">
-              <v-card-text class="text-body-2 pb-2">
-                Copy this dataset to your working directory:
-              </v-card-text>
-              <v-card-text class="pt-0">
-                <v-text-field
-                  :model-value="copy_command"
-                  readonly
-                  density="compact"
-                  variant="outlined"
-                  hide-details
-                  rounded="lg"
-                  bg-color="grey-lighten-4"
-                >
-                  <template #append-inner>
-                    <v-btn
-                      icon="mdi-content-copy"
-                      size="small"
-                      variant="text"
-                      @click="copyToClipboard(copy_command)"
-                    />
-                  </template>
-                </v-text-field>
-              </v-card-text>
-            </v-card>
-          </v-menu>
+            <div class="text-caption">
+              <code>{{ displayUri }}</code>
+              <div v-if="isDserverUri">
+                e.g. <code>dtool cp {{ displayUri }} .</code> after
+                <code>{{ login_command }}</code>
+              </div>
+            </div>
+          </v-tooltip>
         </template>
       </v-card-item>
       <v-card-text class="pt-0">
-        <code class="uri-text text-body-2">{{ displayUri }}</code>
+        <code class="uri-text text-body-2">{{ dataset.uuid }}</code>
       </v-card-text>
     </v-card>
 
@@ -329,6 +312,7 @@ import { useStore } from "@/store";
 import { useNotificationStore } from "@/stores/notifications";
 import { dserverApi } from "@/services/dserverApi";
 import type { Dataset } from "@/types";
+import { dserverUri, loginCommand } from "@/utils/dtoolCommand";
 
 const store = useStore();
 const notifications = useNotificationStore();
@@ -348,26 +332,19 @@ const dataset = computed<Dataset | null>(() => {
   return store.current_dataset;
 });
 
+// With the signed URL plugin, the dtool command line accesses datasets
+// through dserver (dtool-dserver), addressed by this web interface's host.
 const displayUri = computed(() => {
   if (!dataset.value) return "";
   if (store.hasSignedUrlPlugin) {
-    const lookupUrl = store.lookup_url;
-    if (lookupUrl) {
-      try {
-        const url = new URL(lookupUrl);
-        return `dserver://${url.host}/${dataset.value.uuid}`;
-      } catch {
-        return dataset.value.uri;
-      }
-    }
+    return dserverUri(dataset.value.uri) ?? dataset.value.uri;
   }
   return dataset.value.uri;
 });
 
-const copy_command = computed(() => {
-  if (!dataset.value) return "";
-  return "dtool cp " + displayUri.value + " .";
-});
+const isDserverUri = computed(() => displayUri.value.startsWith("dserver://"));
+
+const login_command = loginCommand();
 
 const currentTags = computed<string[]>(() => {
   if (store.current_dataset_tags && store.current_dataset_tags.tags) {
@@ -415,7 +392,7 @@ function cancelEditAnnotation(): void {
 async function copyToClipboard(text: string): Promise<void> {
   try {
     await navigator.clipboard.writeText(text);
-    notifications.success("Copied to clipboard");
+    notifications.success(`Copied ${text}`);
   } catch (err) {
     console.error("Failed to copy:", err);
     notifications.error("Failed to copy to clipboard");

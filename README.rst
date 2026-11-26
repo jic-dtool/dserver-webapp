@@ -48,6 +48,13 @@ endpoints of the dserver OAuth2 token plugin, by default
 
     VUE_APP_OAUTH2_DEVICE_URL="https://dserver.example.org/auth/oauth2/device"
 
+Users log in from the command line with the address of the webapp (e.g.
+``dtool dserver login https://dtool.example.org``): the page names its
+dserver in ``<meta name="dserver-url">`` (``VUE_APP_DTOOL_LOOKUP_SERVER_URL``,
+resolved relative to the page if relative), where ``dtool-dserver`` finds it.
+The ``dtool cp`` commands shown for datasets use ``dserver://`` URIs with the
+webapp's address accordingly.
+
 Customization options for the landing page are available through the following environment variables in the `.env` file:
 
 .. code-block:: text
