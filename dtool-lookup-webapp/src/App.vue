@@ -468,14 +468,15 @@ const searchQuery = computed<DServerSearchQuery>(() => {
   return query;
 });
 
+// The selected dataset: a search hit, or a dataset opened from the
+// dependency graph.
 const uriQuery = computed<{ uri: string | null }>(() => {
-  if (datasetHits.value.length > 0) {
-    return {
-      uri: datasetHits.value[store.current_dataset_index]?.uri ?? null,
-    };
-  } else {
-    return { uri: null };
-  }
+  return {
+    uri:
+      store.current_dataset?.uri ??
+      datasetHits.value[store.current_dataset_index]?.uri ??
+      null,
+  };
 });
 
 const totalPages = computed(() => {
@@ -642,32 +643,17 @@ function updateDataset(): void {
   updateTags();
 }
 
-async function handleDependencyNavigation(uuid: string): Promise<void> {
-  // Navigate to a dataset from the dependency graph
-  // Keep the Dependencies tab open so user can continue exploring the graph
-  const sequence = ++searchSequence;
-  try {
-    // Search using free text with the UUID to find the dataset
-    const result = await dserverApi.searchDatasets({ free_text: uuid });
-    if (sequence !== searchSequence) return;
-    if (result.data.length > 0) {
-      // Find the exact match by UUID
-      const exactMatch = result.data.find((d) => d.uuid === uuid);
-      const dataset = exactMatch || result.data[0];
-
-      datasetHits.value = result.data as Dataset[];
-      paginationInfo.value = result.pagination;
-
-      const datasetIndex = result.data.findIndex((d) => d.uuid === uuid);
-      store.updateCurrentDatasetIndex(datasetIndex >= 0 ? datasetIndex : 0);
-      store.updateCurrentDataset(dataset as Dataset);
-      store.updateNumFiltered(result.pagination.total);
-      updateDataset();
-      // Keep the dependencies tab open (don't switch tabs)
-    }
-  } catch (error) {
-    console.error("Failed to navigate to dataset:", error);
-  }
+// Open a dataset from the dependency graph. The graph's entries carry the
+// same fields as search hits. The search results stay as they are (the row is
+// highlighted if the dataset is among them), and the Dependencies tab stays
+// open to continue exploring.
+function handleDependencyNavigation(dataset: Dataset): void {
+  ++searchSequence; // discard responses for the previous dataset
+  store.updateCurrentDatasetIndex(
+    datasetHits.value.findIndex((d) => d.uuid === dataset.uuid),
+  );
+  store.updateCurrentDataset(dataset);
+  updateDataset();
 }
 
 /**
