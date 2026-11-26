@@ -25,38 +25,12 @@
 
     <!-- Content -->
     <div v-else>
-      <!-- Dataset counts summary -->
-      <div class="pa-4 border-b">
-        <div class="d-flex justify-space-between align-center mb-2">
-          <span class="text-body-2 text-grey-darken-1">Total Datasets</span>
-          <v-chip size="small" color="primary" variant="flat">
-            {{ summary_info?.number_of_datasets ?? 0 }}
-          </v-chip>
-        </div>
-        <div class="d-flex justify-space-between align-center">
-          <span class="text-body-2 text-grey-darken-1">Filtered</span>
-          <v-chip size="small" color="secondary" variant="flat">
-            {{ store.num_filtered }}
-          </v-chip>
-        </div>
-        <v-btn
-          block
-          variant="tonal"
-          color="primary"
-          size="small"
-          class="mt-3"
-          prepend-icon="mdi-filter-off"
-          @click="clearFilters()"
-        >
-          Clear All Filters
-        </v-btn>
-      </div>
-
-      <!-- Locations filter, always open: the storage locations of the
-           datasets, with their dserver URIs for the command line -->
+      <!-- Locations, always open: the storage locations whose datasets are
+           shown (all by default), with their dserver URIs for the command
+           line -->
       <div
         v-if="summary_info?.base_uris && summary_info.base_uris.length > 0"
-        class="border-b"
+        class="locations border-b"
       >
         <div
           class="d-flex align-center px-6 pt-4 pb-1 text-body-2 font-weight-medium"
@@ -64,12 +38,12 @@
           <v-icon start size="small">mdi-folder-marker</v-icon>
           Locations
           <v-spacer />
-          <v-badge
+          <span
             v-if="store.base_uris.length > 0"
-            :content="store.base_uris.length"
-            color="primary"
-            inline
-          />
+            class="text-caption text-primary"
+          >
+            {{ store.base_uris.length }} of {{ summary_info.base_uris.length }}
+          </span>
         </div>
         <v-list
           density="compact"
@@ -85,7 +59,8 @@
           >
             <template #prepend>
               <v-checkbox-btn
-                :model-value="store.base_uris.includes(base_uri)"
+                :model-value="isLocationSelected(base_uri)"
+                :disabled="isOnlySelectedLocation(base_uri)"
                 density="compact"
                 hide-details
                 @click.stop="toggleBaseUri(base_uri)"
@@ -123,6 +98,33 @@
             </template>
           </v-list-item>
         </v-list>
+      </div>
+
+      <!-- Dataset counts summary -->
+      <div class="pa-4 border-b">
+        <div class="d-flex justify-space-between align-center mb-2">
+          <span class="text-body-2 text-grey-darken-1">Total Datasets</span>
+          <v-chip size="small" color="primary" variant="flat">
+            {{ summary_info?.number_of_datasets ?? 0 }}
+          </v-chip>
+        </div>
+        <div class="d-flex justify-space-between align-center">
+          <span class="text-body-2 text-grey-darken-1">Filtered</span>
+          <v-chip size="small" color="secondary" variant="flat">
+            {{ store.num_filtered }}
+          </v-chip>
+        </div>
+        <v-btn
+          block
+          variant="tonal"
+          color="primary"
+          size="small"
+          class="mt-3"
+          prepend-icon="mdi-filter-off"
+          @click="clearFilters()"
+        >
+          Clear All Filters
+        </v-btn>
       </div>
 
       <!-- Further filters -->
@@ -373,12 +375,32 @@ async function copyUri(uri: string): Promise<void> {
   }
 }
 
+// Locations: datasets of the selected locations are shown. No filter
+// (store.base_uris empty) means all locations are selected, the default.
+function selectedLocations(): string[] {
+  return store.base_uris.length > 0
+    ? store.base_uris
+    : (summary_info.value?.base_uris ?? []);
+}
+
+function isLocationSelected(base_uri: string): boolean {
+  return selectedLocations().includes(base_uri);
+}
+
+// At least one location stays selected.
+function isOnlySelectedLocation(base_uri: string): boolean {
+  const selected = selectedLocations();
+  return selected.length === 1 && selected[0] === base_uri;
+}
+
 function toggleBaseUri(base_uri: string): void {
-  store.updateBaseUris(
-    store.base_uris.includes(base_uri)
-      ? store.base_uris.filter((u) => u !== base_uri)
-      : [...store.base_uris, base_uri],
-  );
+  if (isOnlySelectedLocation(base_uri)) return;
+  const selected = selectedLocations();
+  const next = selected.includes(base_uri)
+    ? selected.filter((u) => u !== base_uri)
+    : [...selected, base_uri];
+  const all = summary_info.value?.base_uris ?? [];
+  store.updateBaseUris(next.length === all.length ? [] : next);
   searchDatasets();
 }
 

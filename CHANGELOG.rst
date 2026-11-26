@@ -34,7 +34,10 @@ Added
 Changed
 ^^^^^^^
 
-- The Locations filter is at the top of the sidebar and always open.
+- Locations are listed right below the Repository heading, always open,
+  above the dataset counts and the other filters. Datasets of the selected
+  locations are shown; all are selected by default, and at least one stays
+  selected.
 - Datasets show their UUID instead of their URI; *Copy URI* copies the URI.
 - Updated from bootstrap-vue-3 to bootstap-vue-next
 - Adapted routes to remodeled dserver REST API.
