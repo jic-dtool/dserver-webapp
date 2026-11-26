@@ -10,6 +10,11 @@ This change log uses principles from `keep a changelog <http://keepachangelog.co
 Added
 ^^^^^
 
+- Dependency graph drawn with Vue Flow in a layered layout: datasets flow
+  left to right from the datasets they were derived from, with full names,
+  creator and date, the current dataset highlighted, zoom and pan controls.
+  Clicking a dataset opens it without replacing the search results.
+
 - Approval of command-line logins (``dtool dserver login``): opening the webapp
   with ``?user_code=...`` shows, after logging in, a dialog to approve or deny
   the login (OAuth 2.0 device authorization flow of the dserver OAuth2 token
@@ -41,6 +46,12 @@ Removed
 
 Fixed
 ^^^^^
+
+- The dependency graph was always empty: the webapp asked for the README key
+  ``readme.derived_from.uuid`` instead of the server's
+  ``readme_parsed.derived_from.uuid``. It now uses the server's dependency
+  keys; the panel for editing them is gone.
+- Dependency graphs with more than 10 datasets were cut off (first page only).
 
 - No search box on login screen.
 
