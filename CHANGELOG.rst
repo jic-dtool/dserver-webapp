@@ -39,6 +39,9 @@ Added
 Changed
 ^^^^^^^
 
+- User management: a search or register permission is granted as soon as a
+  base URI is selected; the "+" button is gone.
+
 - Locations are listed right below the Repository heading, always open,
   above the dataset counts and the other filters. Datasets of the selected
   locations are shown; all are selected by default, and at least one stays
