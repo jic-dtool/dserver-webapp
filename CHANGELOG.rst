@@ -14,6 +14,9 @@ Added
   left to right from the datasets they were derived from, with full names,
   creator and date, the current dataset highlighted, zoom and pan controls.
   Clicking a dataset opens it without replacing the search results.
+  Datasets outside the current search filter (free text, mongo query,
+  locations, tags, creators) are shown greyed out and cannot be opened; the
+  server decides which datasets match, with the same search as the list.
 
 - Approval of command-line logins (``dtool dserver login``): opening the webapp
   with ``?user_code=...`` shows, after logging in, a dialog to approve or deny

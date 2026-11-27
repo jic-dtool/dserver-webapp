@@ -52,8 +52,11 @@
             <Handle type="target" :position="Position.Left" />
             <div
               class="dataset-node"
-              :class="{ 'dataset-node--current': data.isCurrent }"
-              :title="nodeTitle(data.dataset)"
+              :class="{
+                'dataset-node--current': data.isCurrent,
+                'dataset-node--filtered-out': isFilteredOut(data),
+              }"
+              :title="nodeTitle(data)"
             >
               <div class="dataset-node__name">{{ data.dataset.name }}</div>
               <div class="dataset-node__meta">
@@ -74,6 +77,10 @@
           >A <span class="legend-arrow">&rarr;</span> B: B was derived from
           A</span
         >
+        <span v-if="matchingUuids"
+          ><span class="legend-node legend-node--filtered-out" /> Not in the
+          current filter</span
+        >
         <span>Click a dataset to open it</span>
       </div>
     </template>
@@ -91,6 +98,9 @@ import "@vue-flow/controls/dist/style.css";
 import { useStore } from "@/store";
 import { formatDate } from "@/utils/dateUtils";
 import { dserverApi } from "@/services/dserverApi";
+import { useAuthStore } from "@/stores/auth";
+import { buildSearchQuery, findMatchingUuids } from "@/services/filterMatches";
+import type { SearchFilter } from "@/services/filterMatches";
 import type { GraphDatasetEntry } from "@/services/dserverApi";
 import {
   layoutDependencyGraph,
@@ -104,6 +114,7 @@ const emit = defineEmits<{
 }>();
 
 const store = useStore();
+const auth = useAuthStore();
 
 const loading = ref(false);
 const error = ref<string | null>(null);
@@ -124,6 +135,52 @@ const flowEdges = computed(() =>
   })),
 );
 
+// --- search filter: datasets outside it are shown, but disabled ---
+
+const filter = computed<SearchFilter>(() => ({
+  query: buildSearchQuery(store),
+  mongoText: store.mongo_text,
+}));
+
+// UUIDs in the graph that match the filter; null if no filter is active (or
+// the check failed: then nothing is disabled).
+const matchingUuids = ref<Set<string> | null>(null);
+
+async function matchFilter(
+  data: GraphDatasetEntry[],
+): Promise<Set<string> | null> {
+  try {
+    return await findMatchingUuids(
+      data.map((dataset) => dataset.uuid),
+      filter.value,
+      auth.token,
+    );
+  } catch (err) {
+    console.error("Failed to apply the search filter to the graph:", err);
+    return null;
+  }
+}
+
+// A changed filter: update the graph shown, without reloading it.
+let filterSequence = 0;
+async function rematch(): Promise<void> {
+  const sequence = ++filterSequence;
+  const data = graphData.value;
+  const matches = await matchFilter(data);
+  if (sequence === filterSequence && graphData.value === data)
+    matchingUuids.value = matches;
+}
+const filterKey = computed(() => JSON.stringify(filter.value));
+watch(filterKey, rematch);
+
+function isFilteredOut(data: DatasetNodeData): boolean {
+  return (
+    !data.isCurrent &&
+    matchingUuids.value !== null &&
+    !matchingUuids.value.has(data.dataset.uuid)
+  );
+}
+
 watch(
   currentUuid,
   async (uuid) => {
@@ -141,9 +198,15 @@ async function loadGraph(): Promise<void> {
   try {
     // The server's dependency keys.
     const data = await dserverApi.getDependencyGraph(uuid);
+    // Shown together with the graph, so no dataset flashes up as clickable.
+    const key = filterKey.value;
+    const matches = await matchFilter(data);
     // Discard the response if another dataset was selected meanwhile.
     if (currentUuid.value !== uuid) return;
     graphData.value = data;
+    matchingUuids.value = matches;
+    // The filter changed while loading.
+    if (filterKey.value !== key) void rematch();
   } catch (err) {
     if (currentUuid.value !== uuid) return;
     console.error("Failed to load dependency graph:", err);
@@ -194,11 +257,13 @@ onUnmounted(() => resizeObserver?.disconnect());
 
 function onNodeClick({ node }: NodeMouseEvent): void {
   const data = node.data as DatasetNodeData;
-  if (!data.isCurrent) emit("select-dataset", data.dataset);
+  if (!data.isCurrent && !isFilteredOut(data))
+    emit("select-dataset", data.dataset);
 }
 
-function nodeTitle(dataset: GraphDatasetEntry): string {
-  return `${dataset.name}\n${dataset.uri}`;
+function nodeTitle(data: DatasetNodeData): string {
+  const title = `${data.dataset.name}\n${data.dataset.uri}`;
+  return isFilteredOut(data) ? `${title}\n(not in the current filter)` : title;
 }
 </script>
 
@@ -247,6 +312,17 @@ function nodeTitle(dataset: GraphDatasetEntry): string {
 
 .dataset-node--current:hover {
   background: rgb(var(--v-theme-primary));
+}
+
+.dataset-node--filtered-out {
+  border-style: dashed;
+  border-color: rgba(var(--v-theme-on-surface), 0.3);
+  color: rgba(var(--v-theme-on-surface), 0.45);
+  cursor: default;
+}
+
+.dataset-node--filtered-out:hover {
+  background: rgb(var(--v-theme-surface));
 }
 
 .dataset-node__name {
@@ -307,6 +383,10 @@ function nodeTitle(dataset: GraphDatasetEntry): string {
 
 .legend-node--current {
   background: rgb(var(--v-theme-primary));
+}
+
+.legend-node--filtered-out {
+  border: 1px dashed rgba(var(--v-theme-on-surface), 0.45);
 }
 
 .legend-arrow {
