@@ -8,7 +8,7 @@
     <!-- Error state -->
     <div v-else-if="error" class="text-center py-8">
       <v-icon size="48" color="error" class="mb-2">mdi-alert-circle</v-icon>
-      <p class="text-body-2 text-error">{{ error }}</p>
+      <p class="text-body-medium text-error">{{ error }}</p>
       <v-btn
         size="small"
         variant="tonal"
@@ -25,8 +25,8 @@
       <v-icon size="48" color="grey-lighten-1" class="mb-2">
         mdi-graph-outline
       </v-icon>
-      <p class="text-body-2">No recorded dependencies</p>
-      <p class="text-caption text-medium-emphasis">
+      <p class="text-body-medium">No recorded dependencies</p>
+      <p class="text-body-small text-medium-emphasis">
         Datasets record what they were derived from in their README, e.g.
         <code>derived_from: [{uuid: ...}]</code>.
       </p>
@@ -66,7 +66,7 @@
           <Controls :show-interactive="false" />
         </VueFlow>
       </div>
-      <div class="graph-legend mt-2 text-caption text-medium-emphasis">
+      <div class="graph-legend mt-2 text-body-small text-medium-emphasis">
         <span
           ><span class="legend-node legend-node--current" /> This dataset</span
         >

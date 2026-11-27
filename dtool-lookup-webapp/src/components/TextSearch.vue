@@ -4,7 +4,7 @@
       <template #activator="{ props }">
         <span
           v-bind="props"
-          class="text-caption text-primary mr-2 search-label"
+          class="text-body-small text-primary mr-2 search-label"
           style="white-space: nowrap"
         >
           {{

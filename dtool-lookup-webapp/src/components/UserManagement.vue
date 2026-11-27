@@ -9,7 +9,7 @@
           <v-icon size="24" color="primary" class="mr-2"
             >mdi-account-group</v-icon
           >
-          <span class="text-h6">User Management</span>
+          <span class="text-title-large">User Management</span>
         </div>
         <v-btn
           color="primary"
@@ -63,7 +63,7 @@
           <template #item.username="{ item }">
             <div class="d-flex align-center">
               <v-avatar size="32" color="primary" class="mr-3">
-                <span class="text-body-2 text-white">{{
+                <span class="text-body-medium text-white">{{
                   item.username.charAt(0).toUpperCase()
                 }}</span>
               </v-avatar>
@@ -73,10 +73,10 @@
 
           <!-- Display Name Column -->
           <template #item.display_name="{ item }">
-            <span v-if="item.display_name" class="text-body-2">{{
+            <span v-if="item.display_name" class="text-body-medium">{{
               item.display_name
             }}</span>
-            <span v-else class="text-caption text-medium-emphasis"
+            <span v-else class="text-body-small text-medium-emphasis"
               >Not set</span
             >
           </template>
@@ -116,7 +116,7 @@
               </v-chip>
               <span
                 v-if="(item.search_permissions_on_base_uris || []).length === 0"
-                class="text-medium-emphasis text-caption"
+                class="text-medium-emphasis text-body-small"
               >
                 None
               </span>
@@ -149,7 +149,7 @@
                 v-if="
                   (item.register_permissions_on_base_uris || []).length === 0
                 "
-                class="text-medium-emphasis text-caption"
+                class="text-medium-emphasis text-body-small"
               >
                 None
               </span>
@@ -175,7 +175,7 @@
             <tr>
               <td :colspan="columns.length" class="pa-4 bg-grey-lighten-4">
                 <div class="permission-editor">
-                  <div class="text-subtitle-2 mb-3 d-flex align-center">
+                  <div class="text-title-small mb-3 d-flex align-center">
                     <v-icon size="18" class="mr-2">mdi-shield-key</v-icon>
                     Manage User: {{ item.username }}
                   </div>
@@ -186,7 +186,7 @@
                       <v-icon size="18" class="mr-2" color="primary"
                         >mdi-badge-account</v-icon
                       >
-                      <span class="text-body-2">Display Name</span>
+                      <span class="text-body-medium">Display Name</span>
                     </div>
                     <div class="d-flex align-center gap-2">
                       <v-text-field
@@ -229,7 +229,9 @@
                         <v-icon size="18" class="mr-2" color="primary"
                           >mdi-shield-account</v-icon
                         >
-                        <span class="text-body-2">Administrator Status</span>
+                        <span class="text-body-medium"
+                          >Administrator Status</span
+                        >
                       </div>
                       <v-switch
                         :model-value="item.is_admin"
@@ -250,7 +252,7 @@
                     </div>
                     <div
                       v-if="item.username === currentUsername"
-                      class="text-caption text-medium-emphasis mt-1"
+                      class="text-body-small text-medium-emphasis mt-1"
                     >
                       You cannot change your own admin status
                     </div>
@@ -260,7 +262,7 @@
                     <!-- Search Permissions -->
                     <v-col cols="12" md="6">
                       <v-card variant="outlined" class="pa-3">
-                        <div class="text-caption text-medium-emphasis mb-2">
+                        <div class="text-body-small text-medium-emphasis mb-2">
                           <v-icon size="14" class="mr-1">mdi-magnify</v-icon>
                           Search Permissions
                         </div>
@@ -273,7 +275,7 @@
                           "
                           class="mb-3"
                         >
-                          <div class="text-caption mb-1">Current:</div>
+                          <div class="text-body-small mb-1">Current:</div>
                           <div class="d-flex flex-wrap gap-1">
                             <v-chip
                               v-for="uri in item.search_permissions_on_base_uris"
@@ -296,14 +298,16 @@
                         </div>
                         <div
                           v-else
-                          class="text-caption text-medium-emphasis mb-3"
+                          class="text-body-small text-medium-emphasis mb-3"
                         >
                           No search permissions assigned
                         </div>
 
                         <!-- Add new permission -->
                         <div v-if="getAvailableSearchUris(item).length > 0">
-                          <div class="text-caption mb-1">Add permission:</div>
+                          <div class="text-body-small mb-1">
+                            Add permission:
+                          </div>
                           <div class="d-flex align-center gap-2">
                             <v-select
                               v-model="pendingSearchPermission[item.username]"
@@ -330,7 +334,10 @@
                             />
                           </div>
                         </div>
-                        <div v-else class="text-caption text-medium-emphasis">
+                        <div
+                          v-else
+                          class="text-body-small text-medium-emphasis"
+                        >
                           All base URIs assigned
                         </div>
                       </v-card>
@@ -339,7 +346,7 @@
                     <!-- Register Permissions -->
                     <v-col cols="12" md="6">
                       <v-card variant="outlined" class="pa-3">
-                        <div class="text-caption text-medium-emphasis mb-2">
+                        <div class="text-body-small text-medium-emphasis mb-2">
                           <v-icon size="14" class="mr-1"
                             >mdi-database-plus</v-icon
                           >
@@ -354,7 +361,7 @@
                           "
                           class="mb-3"
                         >
-                          <div class="text-caption mb-1">Current:</div>
+                          <div class="text-body-small mb-1">Current:</div>
                           <div class="d-flex flex-wrap gap-1">
                             <v-chip
                               v-for="uri in item.register_permissions_on_base_uris"
@@ -377,14 +384,16 @@
                         </div>
                         <div
                           v-else
-                          class="text-caption text-medium-emphasis mb-3"
+                          class="text-body-small text-medium-emphasis mb-3"
                         >
                           No register permissions assigned
                         </div>
 
                         <!-- Add new permission -->
                         <div v-if="getAvailableRegisterUris(item).length > 0">
-                          <div class="text-caption mb-1">Add permission:</div>
+                          <div class="text-body-small mb-1">
+                            Add permission:
+                          </div>
                           <div class="d-flex align-center gap-2">
                             <v-select
                               v-model="pendingRegisterPermission[item.username]"
@@ -413,7 +422,10 @@
                             />
                           </div>
                         </div>
-                        <div v-else class="text-caption text-medium-emphasis">
+                        <div
+                          v-else
+                          class="text-body-small text-medium-emphasis"
+                        >
                           All base URIs assigned
                         </div>
                       </v-card>
@@ -430,7 +442,7 @@
     <!-- Add User Dialog -->
     <v-dialog v-model="showAddUserDialog" max-width="500" persistent>
       <v-card rounded="lg">
-        <v-card-title class="text-h6 pa-4 border-b">
+        <v-card-title class="text-title-large pa-4 border-b">
           <v-icon size="24" color="primary" class="mr-2"
             >mdi-account-plus</v-icon
           >
@@ -471,14 +483,14 @@
     <!-- Delete Confirmation Dialog -->
     <v-dialog v-model="showDeleteDialog" max-width="400">
       <v-card rounded="lg">
-        <v-card-title class="text-h6 pa-4 border-b">
+        <v-card-title class="text-title-large pa-4 border-b">
           <v-icon size="24" color="error" class="mr-2">mdi-alert</v-icon>
           Delete User
         </v-card-title>
         <v-card-text class="pa-4">
           Are you sure you want to delete user
-          <strong>{{ userToDelete?.username }}</strong
-          >? This action cannot be undone.
+          <strong>{{ userToDelete?.username }}</strong>? This action cannot be
+          undone.
         </v-card-text>
         <v-card-actions class="pa-4 pt-0">
           <v-spacer />

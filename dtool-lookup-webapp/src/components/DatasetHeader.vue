@@ -8,10 +8,10 @@
             <v-icon size="24">mdi-database</v-icon>
           </v-avatar>
         </template>
-        <v-card-title class="text-h6 font-weight-medium">
+        <v-card-title class="text-title-large font-weight-medium">
           {{ dataset.name }}
         </v-card-title>
-        <v-card-subtitle class="text-body-2">
+        <v-card-subtitle class="text-body-medium">
           <v-icon size="x-small" class="mr-1">mdi-account</v-icon>
           {{ dataset.creator_username }}
         </v-card-subtitle>

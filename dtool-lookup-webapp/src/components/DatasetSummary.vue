@@ -6,7 +6,9 @@
         <template #prepend>
           <v-icon size="small" color="primary">mdi-identifier</v-icon>
         </template>
-        <v-card-title class="text-body-2 font-weight-medium">UUID</v-card-title>
+        <v-card-title class="text-body-medium font-weight-medium"
+          >UUID</v-card-title
+        >
         <template #append>
           <v-tooltip location="bottom end">
             <template #activator="{ props }">
@@ -21,7 +23,7 @@
                 Copy URI
               </v-btn>
             </template>
-            <div class="text-caption">
+            <div class="text-body-small">
               <code>{{ displayUri }}</code>
               <div v-if="isDserverUri">
                 e.g. <code>dtool cp {{ displayUri }} .</code> after
@@ -32,7 +34,7 @@
         </template>
       </v-card-item>
       <v-card-text class="pt-0">
-        <code class="uri-text text-body-2">{{ dataset.uuid }}</code>
+        <code class="uri-text text-body-medium">{{ dataset.uuid }}</code>
       </v-card-text>
     </v-card>
 
@@ -42,7 +44,9 @@
         <template #prepend>
           <v-icon size="small" color="primary">mdi-tag-multiple</v-icon>
         </template>
-        <v-card-title class="text-body-2 font-weight-medium">Tags</v-card-title>
+        <v-card-title class="text-body-medium font-weight-medium"
+          >Tags</v-card-title
+        >
         <template #append>
           <v-menu
             v-model="addTagMenu"
@@ -61,7 +65,7 @@
               </v-btn>
             </template>
             <v-card min-width="300" rounded="lg">
-              <v-card-text class="text-body-2 pb-2">
+              <v-card-text class="text-body-medium pb-2">
                 Add a tag to this dataset:
               </v-card-text>
               <v-card-text class="pt-0">
@@ -116,7 +120,7 @@
             {{ tag }}
           </v-chip>
         </div>
-        <div v-else class="text-body-2 text-medium-emphasis">
+        <div v-else class="text-body-medium text-medium-emphasis">
           <v-icon size="small" class="mr-1">mdi-information-outline</v-icon>
           No tags yet. Add tags to organize your datasets.
         </div>
@@ -129,7 +133,7 @@
         <template #prepend>
           <v-icon size="small" color="primary">mdi-tag-text</v-icon>
         </template>
-        <v-card-title class="text-body-2 font-weight-medium"
+        <v-card-title class="text-body-medium font-weight-medium"
           >Annotations</v-card-title
         >
         <template #append>
@@ -150,7 +154,7 @@
               </v-btn>
             </template>
             <v-card min-width="320" rounded="lg">
-              <v-card-text class="text-body-2 pb-2">
+              <v-card-text class="text-body-medium pb-2">
                 Add an annotation to this dataset:
               </v-card-text>
               <v-card-text class="pt-0">
@@ -222,10 +226,12 @@
                   <v-icon size="12" color="grey-darken-1">mdi-key</v-icon>
                 </v-avatar>
               </template>
-              <v-list-item-title class="text-body-2 font-weight-medium">
+              <v-list-item-title class="text-body-medium font-weight-medium">
                 {{ key }}
               </v-list-item-title>
-              <v-list-item-subtitle class="text-body-2 text-medium-emphasis">
+              <v-list-item-subtitle
+                class="text-body-medium text-medium-emphasis"
+              >
                 {{ formatAnnotationValue(value) }}
               </v-list-item-subtitle>
               <template #append>
@@ -247,9 +253,8 @@
                     />
                   </template>
                   <v-card min-width="300" rounded="lg">
-                    <v-card-text class="text-body-2 pb-2">
-                      Update value for <strong>{{ key }}</strong
-                      >:
+                    <v-card-text class="text-body-medium pb-2">
+                      Update value for <strong>{{ key }}</strong>:
                     </v-card-text>
                     <v-card-text class="pt-0">
                       <v-text-field
@@ -297,7 +302,7 @@
             </v-list-item>
           </v-list>
         </div>
-        <div v-else class="text-body-2 text-medium-emphasis">
+        <div v-else class="text-body-medium text-medium-emphasis">
           <v-icon size="small" class="mr-1">mdi-information-outline</v-icon>
           No annotations yet. Add key-value annotations for metadata.
         </div>

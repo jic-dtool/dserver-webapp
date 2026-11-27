@@ -30,3 +30,6 @@ declare namespace NodeJS {
     VUE_APP_AUTH_ENABLED?: string;
   }
 }
+
+// Stylesheets imported for their side effects (bundled by webpack).
+declare module "*.css";

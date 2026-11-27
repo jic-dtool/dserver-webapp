@@ -1,0 +1,17 @@
+/*
+ * Vuetify 3's reset removed the margins of headings and paragraphs, and the
+ * layout relies on that (spacing comes from utility classes such as mb-4).
+ * Vuetify 4 no longer does. Restore it in Vuetify's own reset layer, so that
+ * utility classes still take precedence.
+ */
+@layer vuetify-core.reset {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+}

@@ -23,10 +23,10 @@
             <v-icon color="white">mdi-account</v-icon>
           </v-avatar>
           <div class="ml-3">
-            <div class="text-body-1 font-weight-medium">
+            <div class="text-body-large font-weight-medium">
               {{ auth.displayName || "User" }}
             </div>
-            <div class="text-caption text-medium-emphasis">
+            <div class="text-body-small text-medium-emphasis">
               {{ auth.username }}
             </div>
           </div>
@@ -106,18 +106,20 @@
       <v-card-text class="pa-4">
         <!-- Server URL -->
         <div class="mb-4">
-          <div class="text-caption text-medium-emphasis mb-1">Server URL</div>
-          <div class="text-body-2 font-weight-medium">
+          <div class="text-body-small text-medium-emphasis mb-1">
+            Server URL
+          </div>
+          <div class="text-body-medium font-weight-medium">
             {{ lookupUrl || "Not configured" }}
           </div>
         </div>
 
         <!-- Base URIs with permissions -->
         <div class="mb-4">
-          <div class="text-caption text-medium-emphasis mb-2">Base URIs</div>
+          <div class="text-body-small text-medium-emphasis mb-2">Base URIs</div>
           <div
             v-if="userBaseUris.length === 0"
-            class="text-body-2 text-medium-emphasis"
+            class="text-body-medium text-medium-emphasis"
           >
             No base URIs accessible
           </div>
@@ -130,10 +132,10 @@
               <template #prepend>
                 <v-icon size="small" color="primary">mdi-database</v-icon>
               </template>
-              <v-list-item-title class="text-body-2 font-weight-medium">
+              <v-list-item-title class="text-body-medium font-weight-medium">
                 {{ baseUri.uri }}
               </v-list-item-title>
-              <v-list-item-subtitle class="text-caption">
+              <v-list-item-subtitle class="text-body-small">
                 <v-chip
                   v-if="baseUri.canSearch"
                   size="x-small"
@@ -166,10 +168,10 @@
                       <v-icon size="small">mdi-content-copy</v-icon>
                     </v-btn>
                   </template>
-                  <div class="text-caption">
+                  <div class="text-body-small">
                     <div v-if="baseUri.canRegister">Copy dtool command</div>
                     <div v-else>Register permission required</div>
-                    <code v-if="baseUri.canRegister" class="text-caption">{{
+                    <code v-if="baseUri.canRegister" class="text-body-small">{{
                       getDtoolCommand(baseUri.uri)
                     }}</code>
                     <div v-if="baseUri.canRegister">
@@ -184,7 +186,7 @@
 
         <!-- Installed plugins -->
         <div>
-          <div class="text-caption text-medium-emphasis mb-2">
+          <div class="text-body-small text-medium-emphasis mb-2">
             Installed Plugins
           </div>
           <v-table density="compact" class="rounded-lg">
@@ -196,10 +198,10 @@
             </thead>
             <tbody>
               <tr v-for="(version, plugin) in serverVersions" :key="plugin">
-                <td class="text-body-2">
+                <td class="text-body-medium">
                   {{ formatPluginName(plugin as string) }}
                 </td>
-                <td class="text-body-2 text-medium-emphasis">
+                <td class="text-body-medium text-medium-emphasis">
                   {{ version || "N/A" }}
                 </td>
               </tr>

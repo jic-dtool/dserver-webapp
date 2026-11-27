@@ -2,7 +2,7 @@
   <v-row align="center" dense>
     <!-- Left side: Contents per page -->
     <v-col cols="auto" class="d-flex align-center">
-      <span class="text-body-2 mr-2">Contents per page:</span>
+      <span class="text-body-medium mr-2">Contents per page:</span>
       <v-select
         v-model="selectedContentsPerPage"
         :items="perPageOptions"

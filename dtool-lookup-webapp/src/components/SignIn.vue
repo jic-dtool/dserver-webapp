@@ -20,7 +20,7 @@
                   </div>
 
                   <h1
-                    class="text-h5 font-weight-bold text-center mb-6"
+                    class="text-headline-small font-weight-bold text-center mb-6"
                     v-html="
                       rightPanelActive
                         ? fourthContainerHeading
@@ -121,7 +121,7 @@
                   <div v-else>
                     <p
                       v-html="fourthContainerIntro"
-                      class="text-body-1 mb-4"
+                      class="text-body-large mb-4"
                     ></p>
                     <v-list density="compact" class="bg-transparent">
                       <v-list-item
@@ -152,7 +152,7 @@
                   :style="overlayGradient"
                 >
                   <h1
-                    class="text-h5 font-weight-bold text-white text-center mb-4"
+                    class="text-headline-small font-weight-bold text-white text-center mb-4"
                     v-html="
                       rightPanelActive
                         ? thirdContainerHeading
@@ -161,7 +161,7 @@
                   ></h1>
 
                   <p
-                    class="text-body-1 text-white text-center mb-6"
+                    class="text-body-large text-white text-center mb-6"
                     v-html="
                       rightPanelActive
                         ? thirdContainerMessage

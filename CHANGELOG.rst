@@ -39,6 +39,15 @@ Added
 Changed
 ^^^^^^^
 
+- Dependencies updated to their latest versions, among them Vuetify 4,
+  Pinia 4, pinia-plugin-persistedstate 4, Vite 8, Vitest 5, jsdom 31,
+  TypeScript 6, ESLint 10 and sass-loader 17. Buttons and tabs follow
+  Vuetify 4 (Material 3) in using sentence case instead of upper case.
+- ESLint runs directly (``npm run lint``, flat config ``eslint.config.mjs``)
+  instead of through Vue CLI, as Vue CLI's ESLint plugin does not support
+  ESLint 9 and later; linting no longer runs during ``serve`` and ``build``.
+- Node.js 22.22 or 24.15 and later are required (CI: 22, 24, 26).
+
 - Locations are listed right below the Repository heading, always open,
   above the dataset counts and the other filters. Datasets of the selected
   locations are shown; all are selected by default, and at least one stays

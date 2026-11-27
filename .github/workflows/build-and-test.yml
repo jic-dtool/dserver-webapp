@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20', '22', '24']
+        node-version: ['22', '24', '26']
     name: Node ${{ matrix.node-version }}
     steps:
       - name: Check out webapp

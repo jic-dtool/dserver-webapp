@@ -12,13 +12,13 @@
       <template #default>
         <div class="py-2">
           <!-- Headline (dataset name) -->
-          <v-list-item-title class="text-body-1 font-weight-medium mb-1">
+          <v-list-item-title class="text-body-large font-weight-medium mb-1">
             {{ dataset.name }}
           </v-list-item-title>
 
           <!-- Supporting text -->
           <v-list-item-subtitle
-            class="text-body-2 text-medium-emphasis d-flex align-center ga-2"
+            class="text-body-medium text-medium-emphasis d-flex align-center ga-2"
           >
             <v-icon size="x-small" class="mr-1">mdi-account</v-icon>
             {{ dataset.creator_username }}
@@ -28,7 +28,7 @@
           </v-list-item-subtitle>
 
           <!-- UUID (tertiary line) -->
-          <div class="text-caption text-disabled mt-1 uuid-text">
+          <div class="text-body-small text-disabled mt-1 uuid-text">
             {{ dataset.uuid }}
           </div>
 

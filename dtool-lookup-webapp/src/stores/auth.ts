@@ -401,7 +401,7 @@ export const useAuthStore = defineStore(
   {
     persist: {
       key: "dtool-auth",
-      paths: [
+      pick: [
         "token",
         "username",
         "displayName",
