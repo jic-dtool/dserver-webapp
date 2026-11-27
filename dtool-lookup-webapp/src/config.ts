@@ -7,14 +7,14 @@
  */
 
 export const serverUrl: string =
-  process.env.VUE_APP_DTOOL_LOOKUP_SERVER_URL || "http://localhost:5000";
+  import.meta.env.VUE_APP_DTOOL_LOOKUP_SERVER_URL || "http://localhost:5000";
 
 export const tokenGeneratorUrl: string =
-  process.env.VUE_APP_DTOOL_LOOKUP_SERVER_TOKEN_GENERATOR_URL ||
+  import.meta.env.VUE_APP_DTOOL_LOOKUP_SERVER_TOKEN_GENERATOR_URL ||
   `${serverUrl}/auth/token`;
 
 export const authLogoutUrl: string =
-  process.env.VUE_APP_DTOOL_LOOKUP_SERVER_AUTH_LOGOUT_URL ||
+  import.meta.env.VUE_APP_DTOOL_LOOKUP_SERVER_AUTH_LOGOUT_URL ||
   `${serverUrl}/auth/logout`;
 
 /**
@@ -22,9 +22,10 @@ export const authLogoutUrl: string =
  * approve command-line logins (`dtool dserver login`).
  */
 export const oauth2DeviceUrl: string =
-  process.env.VUE_APP_OAUTH2_DEVICE_URL || `${serverUrl}/auth/oauth2/device`;
+  import.meta.env.VUE_APP_OAUTH2_DEVICE_URL ||
+  `${serverUrl}/auth/oauth2/device`;
 
 export const oauth2LoginUrl: string =
-  process.env.VUE_APP_OAUTH2_LOGIN_URL || `${serverUrl}/auth/login`;
+  import.meta.env.VUE_APP_OAUTH2_LOGIN_URL || `${serverUrl}/auth/login`;
 
-export const authEnabled = process.env.VUE_APP_AUTH_ENABLED !== "false";
+export const authEnabled = import.meta.env.VUE_APP_AUTH_ENABLED !== "false";

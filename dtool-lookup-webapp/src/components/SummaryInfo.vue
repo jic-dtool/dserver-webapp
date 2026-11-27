@@ -2,7 +2,7 @@
   <div class="summary-sidebar">
     <!-- Header -->
     <div class="pa-4 bg-primary">
-      <h6 class="text-h6 text-white font-weight-medium">
+      <h6 class="text-title-large text-white font-weight-medium">
         <v-icon start>mdi-folder-search</v-icon>
         Repository
       </h6>
@@ -33,14 +33,14 @@
         class="locations border-b"
       >
         <div
-          class="d-flex align-center px-6 pt-4 pb-1 text-body-2 font-weight-medium"
+          class="d-flex align-center px-6 pt-4 pb-1 text-body-medium font-weight-medium"
         >
           <v-icon start size="small">mdi-folder-marker</v-icon>
           Locations
           <v-spacer />
           <span
             v-if="store.base_uris.length > 0"
-            class="text-caption text-primary"
+            class="text-body-small text-primary"
           >
             {{ store.base_uris.length }} of {{ summary_info.base_uris.length }}
           </span>
@@ -66,7 +66,7 @@
                 @click.stop="toggleBaseUri(base_uri)"
               />
             </template>
-            <v-list-item-title class="text-body-2" :title="base_uri">
+            <v-list-item-title class="text-body-medium" :title="base_uri">
               {{ base_uri }}
             </v-list-item-title>
             <template #append>
@@ -86,7 +86,7 @@
                     @click.stop="copyUri(locationUri(base_uri))"
                   />
                 </template>
-                <div class="text-caption">
+                <div class="text-body-small">
                   <div class="font-weight-medium">Copy URI</div>
                   <code>{{ locationUri(base_uri) }}</code>
                   <div v-if="isDserverUri(locationUri(base_uri))">
@@ -103,13 +103,15 @@
       <!-- Dataset counts summary -->
       <div class="pa-4 border-b">
         <div class="d-flex justify-space-between align-center mb-2">
-          <span class="text-body-2 text-grey-darken-1">Total Datasets</span>
+          <span class="text-body-medium text-grey-darken-1"
+            >Total Datasets</span
+          >
           <v-chip size="small" color="primary" variant="flat">
             {{ summary_info?.number_of_datasets ?? 0 }}
           </v-chip>
         </div>
         <div class="d-flex justify-space-between align-center">
-          <span class="text-body-2 text-grey-darken-1">Filtered</span>
+          <span class="text-body-medium text-grey-darken-1">Filtered</span>
           <v-chip size="small" color="secondary" variant="flat">
             {{ store.num_filtered }}
           </v-chip>
@@ -133,7 +135,7 @@
         <v-expansion-panel
           v-if="summary_info?.tags && summary_info.tags.length > 0"
         >
-          <v-expansion-panel-title class="text-body-2 font-weight-medium">
+          <v-expansion-panel-title class="text-body-medium font-weight-medium">
             <v-icon start size="small">mdi-tag-multiple</v-icon>
             Tags
             <template #actions="{ expanded }">
@@ -170,7 +172,7 @@
                     @click.stop="toggleTag(tag)"
                   />
                 </template>
-                <v-list-item-title class="text-body-2">{{
+                <v-list-item-title class="text-body-medium">{{
                   tag
                 }}</v-list-item-title>
                 <template #append>
@@ -190,7 +192,7 @@
             summary_info.creator_usernames.length > 0
           "
         >
-          <v-expansion-panel-title class="text-body-2 font-weight-medium">
+          <v-expansion-panel-title class="text-body-medium font-weight-medium">
             <v-icon start size="small">mdi-account-multiple</v-icon>
             Creators
             <template #actions="{ expanded }">
@@ -227,7 +229,7 @@
                     @click.stop="toggleCreator(creator)"
                   />
                 </template>
-                <v-list-item-title class="text-body-2">{{
+                <v-list-item-title class="text-body-medium">{{
                   creator
                 }}</v-list-item-title>
                 <template #append>
@@ -244,7 +246,7 @@
         <v-expansion-panel
           v-if="summary_info?.uploaders && summary_info.uploaders.length > 0"
         >
-          <v-expansion-panel-title class="text-body-2 font-weight-medium">
+          <v-expansion-panel-title class="text-body-medium font-weight-medium">
             <v-icon start size="small">mdi-account-arrow-up</v-icon>
             Uploaders
             <template #actions="{ expanded }">
@@ -281,7 +283,7 @@
                     @click.stop="toggleUploader(uploader)"
                   />
                 </template>
-                <v-list-item-title class="text-body-2">{{
+                <v-list-item-title class="text-body-medium">{{
                   uploader
                 }}</v-list-item-title>
                 <template #append>

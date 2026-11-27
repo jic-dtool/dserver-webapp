@@ -19,11 +19,11 @@ dtool-lookup-webapp/           # git root (docs, provision/)
 All commands run from the inner `dtool-lookup-webapp/` directory:
 
 ```bash
-npm install              # install deps + apply .env changes
-npm run serve            # dev server (vue-cli-service)
+npm install              # install deps
+npm run serve            # Vite dev server (also: npm run dev)
 npm run build            # production build -> dist/ (static SPA)
-npm run lint             # eslint via vue-cli-service; CI runs `npm run lint src`
-npm run type-check       # vue-tsc --noEmit (TS type checking)
+npm run lint             # ESLint (flat config eslint.config.mjs)
+npm run type-check       # vue-tsc (TS 6 API) for the app, tsc (TS 7) for vite.config.ts
 npm run test             # vitest (watch mode)
 npm run test:unit        # vitest run (one-shot; what CI runs)
 npm run test:coverage    # vitest run --coverage
@@ -31,14 +31,19 @@ npx vitest run tests/unit/store.spec.ts          # run a single test file
 npx vitest run -t "name of test"                 # run tests matching a name
 ```
 
-CI (`.github/workflows/build-and-test.yml`) runs lint → build → test:unit on
-Node 16 and 18.
+CI (`.github/workflows/build-and-test.yml`) runs lint → type-check → build →
+test:unit on Node 22, 24 and 26.
+
+Build tool: **Vite** (`vite.config.ts`, also the Vitest config; `index.html` at
+the project root). TypeScript 7 (`@typescript/native`, provides `tsc`) is
+installed side by side with the TypeScript 6 API (`typescript` aliased to
+`@typescript/typescript6`), which vue-tsc and typescript-eslint need.
 
 ## Configuration (`.env`)
 
-The app is configured **at build time** via `VUE_APP_*` environment variables in
-`dtool-lookup-webapp/.env` (not committed). `.env` changes only take effect after
-re-running `npm install` / rebuilding. Key vars:
+The app is configured **at build time** via `VUE_APP_*` environment variables
+(or `dtool-lookup-webapp/.env`, not committed), exposed by Vite as
+`import.meta.env.VUE_APP_*` (`envPrefix` in `vite.config.ts`). Key vars:
 
 - `VUE_APP_DTOOL_LOOKUP_SERVER_URL` — dserver base URL (default `http://localhost:5000`)
 - `VUE_APP_DTOOL_LOOKUP_SERVER_TOKEN_GENERATOR_URL` — OAuth2 token endpoint (default `${serverUrl}/auth/token`)
@@ -48,12 +53,12 @@ re-running `npm install` / rebuilding. Key vars:
 - Landing-page and user-menu customization vars (see `README.rst`)
 
 All server endpoints are resolved in a single place — **`src/config.ts`** — so a
-missing env var degrades consistently. Do not read `process.env.VUE_APP_*`
+missing env var degrades consistently. Do not read `import.meta.env.VUE_APP_*`
 directly elsewhere; import from `@/config`.
 
 ## Architecture
 
-A single-page Vue 3 (Composition API + `<script setup>`) app using **Vuetify 3**
+A single-page Vue 3 (Composition API + `<script setup>`) app using **Vuetify 4**
 for UI and **Pinia** for state. It is a pure client that talks to an external
 **dserver** (`dtool-lookup-server`) REST API. `@` is aliased to `src/`.
 

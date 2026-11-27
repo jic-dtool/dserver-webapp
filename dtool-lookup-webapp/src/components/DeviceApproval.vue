@@ -22,12 +22,14 @@
             Approve only if this code matches the one shown in your terminal:
           </p>
           <p
-            class="text-h5 text-center font-weight-bold my-4"
+            class="text-headline-small text-center font-weight-bold my-4"
             data-test="user-code"
           >
             {{ userCode }}
           </p>
-          <p v-if="expiresAt" class="text-caption">Expires {{ expiresAt }}.</p>
+          <p v-if="expiresAt" class="text-body-small">
+            Expires {{ expiresAt }}.
+          </p>
         </template>
 
         <v-alert

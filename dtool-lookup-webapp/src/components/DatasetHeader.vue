@@ -23,7 +23,7 @@
                 <v-icon size="40">mdi-database</v-icon>
               </v-avatar>
             </template>
-            <div class="text-caption">
+            <div class="text-body-small">
               <div class="font-weight-medium">Click to copy the URI</div>
               <code>{{ displayUri }}</code>
               <div v-if="isDserverUri">
@@ -33,14 +33,14 @@
             </div>
           </v-tooltip>
         </template>
-        <v-card-title class="text-h6 font-weight-medium">
+        <v-card-title class="text-title-large font-weight-medium">
           {{ dataset.name }}
         </v-card-title>
-        <v-card-subtitle class="text-body-2">
+        <v-card-subtitle class="text-body-medium">
           <v-icon size="x-small" class="mr-1">mdi-identifier</v-icon>
           <span class="uuid">{{ dataset.uuid }}</span>
         </v-card-subtitle>
-        <v-card-subtitle class="text-body-2">
+        <v-card-subtitle class="text-body-medium">
           <v-icon size="x-small" class="mr-1">mdi-account</v-icon>
           {{ dataset.creator_username }}
         </v-card-subtitle>

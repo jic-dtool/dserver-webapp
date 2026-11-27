@@ -10,7 +10,9 @@
             size="64"
             class="mb-4"
           />
-          <p class="text-body-1 text-grey-darken-1">Connecting to server...</p>
+          <p class="text-body-large text-grey-darken-1">
+            Connecting to server...
+          </p>
         </v-card>
       </v-main>
     </template>
@@ -22,7 +24,9 @@
           <div class="text-center mb-6">
             <v-icon icon="mdi-server-off" size="80" color="error" />
           </div>
-          <h1 class="text-h5 font-weight-bold text-center mb-4 text-error">
+          <h1
+            class="text-headline-small font-weight-bold text-center mb-4 text-error"
+          >
             Server Unavailable
           </h1>
           <v-alert type="error" variant="tonal" class="mb-4">
@@ -30,10 +34,10 @@
               serverHealth.errorMessage || "Unable to connect to the dserver."
             }}
           </v-alert>
-          <p class="text-body-2 text-grey-darken-1 mb-4">
+          <p class="text-body-medium text-grey-darken-1 mb-4">
             The dtool lookup server is not responding. This could be due to:
           </p>
-          <ul class="text-body-2 text-grey-darken-1 mb-6 ml-4">
+          <ul class="text-body-medium text-grey-darken-1 mb-6 ml-4">
             <li>Server maintenance or downtime</li>
             <li>Network connectivity issues</li>
             <li>Server configuration problems</li>
@@ -47,7 +51,7 @@
             <v-icon icon="mdi-refresh" class="mr-2" />
             Retry Connection
           </v-btn>
-          <p class="text-caption text-grey mt-4 text-center">
+          <p class="text-body-small text-grey mt-4 text-center">
             Server URL: {{ serverHealth.serverUrl }}
           </p>
         </v-card>
@@ -365,7 +369,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, defineAsyncComponent } from "vue";
 import axios from "axios";
 import SignIn from "./components/SignIn.vue";
 import SummaryInfo from "./components/SummaryInfo.vue";
@@ -378,8 +382,14 @@ import DatasetHeader from "./components/DatasetHeader.vue";
 import DatasetSorting from "./components/DatasetSorting.vue";
 import UserMenu from "./components/UserMenu.vue";
 import NotificationSnackbar from "./components/NotificationSnackbar.vue";
-import UserManagement from "./components/UserManagement.vue";
-import DatasetDependencies from "./components/DatasetDependencies.vue";
+// Loaded when first shown: the dependency graph (Vue Flow, dagre) and the
+// admin-only user management.
+const UserManagement = defineAsyncComponent(
+  () => import("./components/UserManagement.vue"),
+);
+const DatasetDependencies = defineAsyncComponent(
+  () => import("./components/DatasetDependencies.vue"),
+);
 import DeviceApproval from "./components/DeviceApproval.vue";
 import { capturePendingUserCode } from "./services/deviceApproval";
 import { useStore } from "./store";

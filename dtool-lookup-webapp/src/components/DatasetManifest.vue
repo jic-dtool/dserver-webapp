@@ -2,7 +2,7 @@
   <div v-if="manifest" class="manifest-section">
     <!-- Items per page selector and info -->
     <div class="d-flex align-center justify-space-between mb-3">
-      <div class="text-body-2 text-medium-emphasis">
+      <div class="text-body-medium text-medium-emphasis">
         Showing {{ displayStart }}-{{ displayEnd }} of {{ numItems }} items
       </div>
       <v-select
@@ -35,10 +35,10 @@
             }}</v-icon>
           </v-avatar>
         </template>
-        <v-list-item-title class="text-body-2 font-weight-medium">
+        <v-list-item-title class="text-body-medium font-weight-medium">
           {{ item.relpath }}
         </v-list-item-title>
-        <v-list-item-subtitle class="text-caption text-medium-emphasis">
+        <v-list-item-subtitle class="text-body-small text-medium-emphasis">
           {{ filesize(item.size_in_bytes) }}
         </v-list-item-subtitle>
         <template #append>
@@ -65,7 +65,7 @@
               />
             </template>
             <v-card min-width="440" rounded="lg">
-              <v-card-text class="text-body-2 pb-2">
+              <v-card-text class="text-body-medium pb-2">
                 Fetch this item to get an absolute path on disk:
               </v-card-text>
               <v-card-text class="pt-0">
@@ -99,7 +99,7 @@
       <v-icon size="48" color="grey-lighten-1" class="mb-2"
         >mdi-file-tree</v-icon
       >
-      <p class="text-body-2">No items in this dataset</p>
+      <p class="text-body-medium">No items in this dataset</p>
     </div>
 
     <!-- Pagination -->

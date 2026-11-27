@@ -2,7 +2,9 @@
   <div class="readme-section">
     <!-- Header with Edit button -->
     <div class="d-flex align-center justify-space-between mb-3">
-      <div class="text-body-2 text-medium-emphasis">Dataset README (YAML)</div>
+      <div class="text-body-medium text-medium-emphasis">
+        Dataset README (YAML)
+      </div>
       <!-- Edit button - shows inline editor if valid YAML, otherwise shows dtool command -->
       <v-btn
         v-if="isValidYaml && getReadmeContent"
@@ -31,7 +33,7 @@
           </v-btn>
         </template>
         <v-card min-width="440" rounded="lg">
-          <v-card-text class="text-body-2 pb-2">
+          <v-card-text class="text-body-medium pb-2">
             Edit the README and update it in the dataset:
           </v-card-text>
           <v-card-text class="pt-0">
@@ -98,7 +100,7 @@
       <v-icon size="48" color="grey-lighten-1" class="mb-2"
         >mdi-file-document-outline</v-icon
       >
-      <p class="text-body-2">No README content</p>
+      <p class="text-body-medium">No README content</p>
     </div>
   </div>
 </template>
