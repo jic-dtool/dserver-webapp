@@ -55,12 +55,14 @@ Changed
   does not have. ``npm run type-check`` runs vue-tsc and TypeScript 7's tsc.
 - ESLint runs directly (``npm run lint``, flat config ``eslint.config.mjs``).
 - Node.js 22.22 or 24.15 and later are required (CI: 22, 24, 26).
-
+- User management: a search or register permission is granted as soon as a
+  base URI is selected; the "+" button is gone.
 - Locations are listed right below the Repository heading, always open,
   above the dataset counts and the other filters. Datasets of the selected
   locations are shown; all are selected by default, and at least one stays
   selected.
-- Datasets show their UUID instead of their URI; *Copy URI* copies the URI.
+- Datasets show their UUID below their name (instead of a separate URI
+  card); clicking the dataset icon copies the URI.
 - Updated from bootstrap-vue-3 to bootstap-vue-next
 - Adapted routes to remodeled dserver REST API.
 

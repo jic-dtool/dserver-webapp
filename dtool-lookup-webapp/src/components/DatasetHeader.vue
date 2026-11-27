@@ -4,13 +4,42 @@
     <v-card variant="flat" class="mb-4">
       <v-card-item>
         <template #prepend>
-          <v-avatar color="primary" variant="tonal" size="48" rounded="lg">
-            <v-icon size="24">mdi-database</v-icon>
-          </v-avatar>
+          <!-- Clicking the dataset icon copies its URI. -->
+          <v-tooltip location="bottom start">
+            <template #activator="{ props }">
+              <v-avatar
+                v-bind="props"
+                color="primary"
+                variant="tonal"
+                size="72"
+                rounded="lg"
+                class="copy-uri"
+                role="button"
+                tabindex="0"
+                aria-label="Copy URI"
+                @click="copyUri()"
+                @keydown.enter="copyUri()"
+              >
+                <v-icon size="40">mdi-database</v-icon>
+              </v-avatar>
+            </template>
+            <div class="text-body-small">
+              <div class="font-weight-medium">Click to copy the URI</div>
+              <code>{{ displayUri }}</code>
+              <div v-if="isDserverUri">
+                e.g. <code>dtool cp {{ displayUri }} .</code> after
+                <code>{{ login_command }}</code>
+              </div>
+            </div>
+          </v-tooltip>
         </template>
         <v-card-title class="text-title-large font-weight-medium">
           {{ dataset.name }}
         </v-card-title>
+        <v-card-subtitle class="text-body-medium">
+          <v-icon size="x-small" class="mr-1">mdi-identifier</v-icon>
+          <span class="uuid">{{ dataset.uuid }}</span>
+        </v-card-subtitle>
         <v-card-subtitle class="text-body-medium">
           <v-icon size="x-small" class="mr-1">mdi-account</v-icon>
           {{ dataset.creator_username }}
@@ -64,9 +93,12 @@ import { computed } from "vue";
 import { filesize as filesizeLib } from "filesize";
 import { useStore } from "@/store";
 import { formatDate } from "@/utils/dateUtils";
+import { dserverUri, loginCommand } from "@/utils/dtoolCommand";
+import { useNotificationStore } from "@/stores/notifications";
 import type { Dataset, ManifestItem } from "@/types";
 
 const store = useStore();
+const notifications = useNotificationStore();
 
 // Computed properties
 const dataset = computed<Dataset | null>(() => {
@@ -95,6 +127,30 @@ const total_size_in_bytes = computed(() => {
   return total;
 });
 
+// With the signed URL plugin, the dtool command line accesses datasets
+// through dserver (dtool-dserver), addressed by this web interface's host.
+const displayUri = computed(() => {
+  if (!dataset.value) return "";
+  if (store.hasSignedUrlPlugin) {
+    return dserverUri(dataset.value.uri) ?? dataset.value.uri;
+  }
+  return dataset.value.uri;
+});
+
+const isDserverUri = computed(() => displayUri.value.startsWith("dserver://"));
+
+const login_command = loginCommand();
+
+async function copyUri(): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(displayUri.value);
+    notifications.success(`Copied ${displayUri.value}`);
+  } catch (err) {
+    console.error("Failed to copy:", err);
+    notifications.error("Failed to copy to clipboard");
+  }
+}
+
 // Helper functions
 function filesize(bytes: number): string {
   return filesizeLib(bytes) as string;
@@ -108,5 +164,14 @@ function filesize(bytes: number): string {
 
 .ga-2 {
   gap: 8px;
+}
+
+.uuid {
+  font-family: "Roboto Mono", monospace;
+  font-size: 12px;
+}
+
+.copy-uri {
+  cursor: pointer;
 }
 </style>

@@ -1,43 +1,5 @@
 <template>
   <div v-if="dataset" class="dataset-summary">
-    <!-- UUID Section -->
-    <v-card variant="outlined" class="mb-4" rounded="lg">
-      <v-card-item density="compact">
-        <template #prepend>
-          <v-icon size="small" color="primary">mdi-identifier</v-icon>
-        </template>
-        <v-card-title class="text-body-medium font-weight-medium"
-          >UUID</v-card-title
-        >
-        <template #append>
-          <v-tooltip location="bottom end">
-            <template #activator="{ props }">
-              <v-btn
-                v-bind="props"
-                size="small"
-                variant="tonal"
-                color="primary"
-                prepend-icon="mdi-content-copy"
-                @click="copyToClipboard(displayUri)"
-              >
-                Copy URI
-              </v-btn>
-            </template>
-            <div class="text-body-small">
-              <code>{{ displayUri }}</code>
-              <div v-if="isDserverUri">
-                e.g. <code>dtool cp {{ displayUri }} .</code> after
-                <code>{{ login_command }}</code>
-              </div>
-            </div>
-          </v-tooltip>
-        </template>
-      </v-card-item>
-      <v-card-text class="pt-0">
-        <code class="uri-text text-body-medium">{{ dataset.uuid }}</code>
-      </v-card-text>
-    </v-card>
-
     <!-- Tags Section -->
     <v-card variant="outlined" class="mb-4" rounded="lg">
       <v-card-item density="compact">
@@ -317,7 +279,6 @@ import { useStore } from "@/store";
 import { useNotificationStore } from "@/stores/notifications";
 import { dserverApi } from "@/services/dserverApi";
 import type { Dataset } from "@/types";
-import { dserverUri, loginCommand } from "@/utils/dtoolCommand";
 
 const store = useStore();
 const notifications = useNotificationStore();
@@ -336,20 +297,6 @@ const saving = ref(false);
 const dataset = computed<Dataset | null>(() => {
   return store.current_dataset;
 });
-
-// With the signed URL plugin, the dtool command line accesses datasets
-// through dserver (dtool-dserver), addressed by this web interface's host.
-const displayUri = computed(() => {
-  if (!dataset.value) return "";
-  if (store.hasSignedUrlPlugin) {
-    return dserverUri(dataset.value.uri) ?? dataset.value.uri;
-  }
-  return dataset.value.uri;
-});
-
-const isDserverUri = computed(() => displayUri.value.startsWith("dserver://"));
-
-const login_command = loginCommand();
 
 const currentTags = computed<string[]>(() => {
   if (store.current_dataset_tags && store.current_dataset_tags.tags) {
@@ -392,16 +339,6 @@ function toggleEditMenu(key: string, open: boolean): void {
 function cancelEditAnnotation(): void {
   editingAnnotationKey.value = null;
   editAnnotationValue.value = "";
-}
-
-async function copyToClipboard(text: string): Promise<void> {
-  try {
-    await navigator.clipboard.writeText(text);
-    notifications.success(`Copied ${text}`);
-  } catch (err) {
-    console.error("Failed to copy:", err);
-    notifications.error("Failed to copy to clipboard");
-  }
 }
 
 // Tag operations
@@ -555,15 +492,6 @@ async function deleteAnnotation(key: string): Promise<void> {
 <style scoped>
 .dataset-summary {
   /* Parent container handles padding */
-}
-
-.uri-text {
-  font-family: "Roboto Mono", monospace;
-  background-color: rgba(var(--v-theme-surface-variant), 0.4);
-  padding: 8px 12px;
-  border-radius: 8px;
-  display: block;
-  word-break: break-all;
 }
 
 .ga-2 {

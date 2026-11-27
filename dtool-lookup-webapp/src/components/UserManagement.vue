@@ -305,32 +305,27 @@
 
                         <!-- Add new permission -->
                         <div v-if="getAvailableSearchUris(item).length > 0">
-                          <div class="text-body-small mb-1">
-                            Add permission:
-                          </div>
                           <div class="d-flex align-center gap-2">
+                            <!-- Granted as soon as a base URI is selected -->
                             <v-select
                               v-model="pendingSearchPermission[item.username]"
                               :items="getAvailableSearchUris(item)"
-                              label="Select base URI"
+                              label="Add base URI"
                               variant="outlined"
                               density="compact"
                               hide-details
                               class="flex-grow-1"
-                            />
-                            <v-btn
-                              icon="mdi-plus"
-                              size="small"
-                              color="secondary"
-                              variant="tonal"
-                              :disabled="
-                                !pendingSearchPermission[item.username]
-                              "
                               :loading="
                                 savingPermission ===
                                 `search-grant-${item.username}`
                               "
-                              @click="grantSearchPermission(item.username)"
+                              :disabled="
+                                savingPermission ===
+                                `search-grant-${item.username}`
+                              "
+                              @update:model-value="
+                                grantSearchPermission(item.username)
+                              "
                             />
                           </div>
                         </div>
@@ -391,32 +386,25 @@
 
                         <!-- Add new permission -->
                         <div v-if="getAvailableRegisterUris(item).length > 0">
-                          <div class="text-body-small mb-1">
-                            Add permission:
-                          </div>
                           <div class="d-flex align-center gap-2">
+                            <!-- Granted as soon as a base URI is selected -->
                             <v-select
                               v-model="pendingRegisterPermission[item.username]"
                               :items="getAvailableRegisterUris(item)"
-                              label="Select base URI"
+                              label="Add base URI"
                               variant="outlined"
                               density="compact"
                               hide-details
                               class="flex-grow-1"
-                            />
-                            <v-btn
-                              icon="mdi-plus"
-                              size="small"
-                              color="success"
-                              variant="tonal"
-                              :disabled="
-                                !pendingRegisterPermission[item.username]
-                              "
                               :loading="
                                 savingPermission ===
                                 `register-grant-${item.username}`
                               "
-                              @click="
+                              :disabled="
+                                savingPermission ===
+                                `register-grant-${item.username}`
+                              "
+                              @update:model-value="
                                 grantRegisterPermissionInline(item.username)
                               "
                             />
@@ -657,6 +645,7 @@ async function grantSearchPermission(username: string): Promise<void> {
   } catch (e) {
     console.error("Failed to grant search permission:", e);
     notifications.error("Failed to grant search permission");
+    delete pendingSearchPermission[username];
   } finally {
     savingPermission.value = null;
   }
@@ -692,6 +681,7 @@ async function grantRegisterPermissionInline(username: string): Promise<void> {
   } catch (e) {
     console.error("Failed to grant register permission:", e);
     notifications.error("Failed to grant register permission");
+    delete pendingRegisterPermission[username];
   } finally {
     savingPermission.value = null;
   }
