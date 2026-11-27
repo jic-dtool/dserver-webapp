@@ -227,35 +227,39 @@ const signInLoading = ref(false);
 const rightPanelActive = ref(false);
 
 const logoSrc =
-  process.env.VUE_APP_LANDING_PAGE_ICON_PATH || "/icons/128x128/dtool_logo.png";
+  import.meta.env.VUE_APP_LANDING_PAGE_ICON_PATH ||
+  "/icons/128x128/dtool_logo.png";
 
 // OAuth2 configuration
-const oauth2Enabled = process.env.VUE_APP_OAUTH2_ENABLED === "true";
-const oauth2ProviderName = process.env.VUE_APP_OAUTH2_PROVIDER_NAME || "OAuth2";
+const oauth2Enabled = import.meta.env.VUE_APP_OAUTH2_ENABLED === "true";
+const oauth2ProviderName =
+  import.meta.env.VUE_APP_OAUTH2_PROVIDER_NAME || "OAuth2";
 // oauth2LoginUrl is imported from @/config (env-configurable via VUE_APP_OAUTH2_LOGIN_URL)
 // Show username/password form if OAuth2 is disabled or if explicitly enabled
 const showUsernamePasswordForm =
-  !oauth2Enabled || process.env.VUE_APP_SHOW_USERNAME_PASSWORD_FORM === "true";
+  !oauth2Enabled ||
+  import.meta.env.VUE_APP_SHOW_USERNAME_PASSWORD_FORM === "true";
 const firstContainerTitle =
-  process.env.VUE_APP_FIRST_CONTAINER_TITLE || "Sign In";
+  import.meta.env.VUE_APP_FIRST_CONTAINER_TITLE || "Sign In";
 const secondContainerTitle =
-  process.env.VUE_APP_SECOND_CONTAINER_TITLE || "Welcome to Dtool";
+  import.meta.env.VUE_APP_SECOND_CONTAINER_TITLE || "Welcome to Dtool";
 const secondContainerMessage =
-  process.env.VUE_APP_SECOND_CONTAINER_MESSAGE ||
+  import.meta.env.VUE_APP_SECOND_CONTAINER_MESSAGE ||
   "Make your data more resilient, portable and easy to work with by packaging files & metadata into self-contained datasets.";
 const thirdContainerHeading =
-  process.env.VUE_APP_THIRD_CONTAINER_HEADING || "Access Your Account";
+  import.meta.env.VUE_APP_THIRD_CONTAINER_HEADING || "Access Your Account";
 const thirdContainerMessage =
-  process.env.VUE_APP_THIRD_CONTAINER_MESSAGE ||
+  import.meta.env.VUE_APP_THIRD_CONTAINER_MESSAGE ||
   "To log in, use the default credentials: Username - <strong>testuser</strong>, Password - <strong>test_password</strong>.";
 const fourthContainerHeading =
-  process.env.VUE_APP_FOURTH_CONTAINER_HEADING || "Supporting Documentation";
+  import.meta.env.VUE_APP_FOURTH_CONTAINER_HEADING ||
+  "Supporting Documentation";
 const fourthContainerIntro =
-  process.env.VUE_APP_FOURTH_CONTAINER_INTRO ||
+  import.meta.env.VUE_APP_FOURTH_CONTAINER_INTRO ||
   "Please refer to the following resources for more information:";
-const fourthContainerResources: ResourceLink[] = process.env
+const fourthContainerResources: ResourceLink[] = import.meta.env
   .VUE_APP_FOURTH_CONTAINER_RESOURCES
-  ? JSON.parse(process.env.VUE_APP_FOURTH_CONTAINER_RESOURCES)
+  ? JSON.parse(import.meta.env.VUE_APP_FOURTH_CONTAINER_RESOURCES)
   : [
       {
         text: "dtool-lookup-webapp repository",

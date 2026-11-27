@@ -13,7 +13,7 @@
  */
 export function webAddress(
   origin: string = window.location.origin,
-  basePath: string = process.env.BASE_URL || "/",
+  basePath: string = import.meta.env.BASE_URL || "/",
 ): string {
   return new URL(basePath, origin).href.replace(/\/$/, "");
 }

@@ -39,13 +39,21 @@ Added
 Changed
 ^^^^^^^
 
+- Built with Vite instead of Vue CLI (unmaintained): ``npm run serve`` (or
+  ``dev``), ``build`` and ``preview``. Configuration still comes from
+  ``VUE_APP_*`` environment variables and ``.env`` files, now read as
+  ``import.meta.env.VUE_APP_*``. ``index.html`` moved to the project root.
+  Babel, core-js and the webpack toolchain are gone. The dependency graph
+  and the user management are loaded when first opened.
 - Dependencies updated to their latest versions, among them Vuetify 4,
   Pinia 4, pinia-plugin-persistedstate 4, Vite 8, Vitest 5, jsdom 31,
-  TypeScript 6, ESLint 10 and sass-loader 17. Buttons and tabs follow
-  Vuetify 4 (Material 3) in using sentence case instead of upper case.
-- ESLint runs directly (``npm run lint``, flat config ``eslint.config.mjs``)
-  instead of through Vue CLI, as Vue CLI's ESLint plugin does not support
-  ESLint 9 and later; linting no longer runs during ``serve`` and ``build``.
+  TypeScript 7 and ESLint 10. Buttons and tabs follow Vuetify 4 (Material 3)
+  in using sentence case instead of upper case.
+- TypeScript 7 is installed side by side with TypeScript 6
+  (``@typescript/typescript6``, aliased as ``typescript``): vue-tsc and
+  typescript-eslint need TypeScript's JavaScript API, which TypeScript 7.0
+  does not have. ``npm run type-check`` runs vue-tsc and TypeScript 7's tsc.
+- ESLint runs directly (``npm run lint``, flat config ``eslint.config.mjs``).
 - Node.js 22.22 or 24.15 and later are required (CI: 22, 24, 26).
 
 - Locations are listed right below the Repository heading, always open,

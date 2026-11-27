@@ -266,11 +266,12 @@ const infoDialog = ref(false);
 
 // Environment config
 const downloadReadmeYaml =
-  process.env.VUE_APP_OFFER_DTOOL_README_YAML_DOWNLOAD === "true";
+  import.meta.env.VUE_APP_OFFER_DTOOL_README_YAML_DOWNLOAD === "true";
 const downloadReadmeJson =
-  process.env.VUE_APP_OFFER_DTOOL_JSON_DOWNLOAD === "true";
-const showInfoMenuEntry = process.env.VUE_APP_SHOW_INFO_MENU_ENTRY === "true";
-const infoContent = process.env.VUE_APP_INFO_CONTENT || "Info Content";
+  import.meta.env.VUE_APP_OFFER_DTOOL_JSON_DOWNLOAD === "true";
+const showInfoMenuEntry =
+  import.meta.env.VUE_APP_SHOW_INFO_MENU_ENTRY === "true";
+const infoContent = import.meta.env.VUE_APP_INFO_CONTENT || "Info Content";
 
 // Computed properties - use auth store for username
 const username = computed(() => auth.displayName || auth.username);
@@ -342,8 +343,8 @@ async function copyDtoolCommand(baseUri: string): Promise<void> {
 async function downloadFile(fileName: string): Promise<void> {
   const filePath =
     fileName === "dtool.json"
-      ? process.env.VUE_APP_DTOOL_JSON_PATH || `data/templates/${fileName}`
-      : process.env.VUE_APP_DTOOL_README_YAML_PATH ||
+      ? import.meta.env.VUE_APP_DTOOL_JSON_PATH || `data/templates/${fileName}`
+      : import.meta.env.VUE_APP_DTOOL_README_YAML_PATH ||
         `data/templates/${fileName}`;
 
   // Send the JWT so server-side generators (e.g. the config-generator plugin)

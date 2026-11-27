@@ -369,7 +369,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, defineAsyncComponent } from "vue";
 import axios from "axios";
 import SignIn from "./components/SignIn.vue";
 import SummaryInfo from "./components/SummaryInfo.vue";
@@ -382,8 +382,14 @@ import DatasetHeader from "./components/DatasetHeader.vue";
 import DatasetSorting from "./components/DatasetSorting.vue";
 import UserMenu from "./components/UserMenu.vue";
 import NotificationSnackbar from "./components/NotificationSnackbar.vue";
-import UserManagement from "./components/UserManagement.vue";
-import DatasetDependencies from "./components/DatasetDependencies.vue";
+// Loaded when first shown: the dependency graph (Vue Flow, dagre) and the
+// admin-only user management.
+const UserManagement = defineAsyncComponent(
+  () => import("./components/UserManagement.vue"),
+);
+const DatasetDependencies = defineAsyncComponent(
+  () => import("./components/DatasetDependencies.vue"),
+);
 import DeviceApproval from "./components/DeviceApproval.vue";
 import { capturePendingUserCode } from "./services/deviceApproval";
 import { useStore } from "./store";

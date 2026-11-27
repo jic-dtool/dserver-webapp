@@ -24,10 +24,15 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### Run your tests, lint and type check
 ```
-npm run test
+npm run test:unit
+npm run lint
+npm run type-check
 ```
+
+The app is built with Vite. Configuration comes from `VUE_APP_*` environment
+variables or `.env` files at build time (`import.meta.env.VUE_APP_*`).
 
 ### Lints and fixes files
 ```

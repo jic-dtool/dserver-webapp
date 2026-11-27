@@ -58,7 +58,7 @@ jobs:
 
       - name: Lint
         working-directory: dtool-lookup-webapp/dtool-lookup-webapp
-        run: npm run lint src
+        run: npm run lint
 
       - name: Type-check
         working-directory: dtool-lookup-webapp/dtool-lookup-webapp
