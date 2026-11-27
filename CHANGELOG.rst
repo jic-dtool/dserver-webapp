@@ -4,17 +4,21 @@ CHANGELOG
 This project uses `semantic versioning <http://semver.org/>`_.
 This change log uses principles from `keep a changelog <http://keepachangelog.com/>`_.
 
-[Unreleased]
-------------
+[0.5.0] - 2026-11-27
+--------------------
+
+The webapp for dserver (formerly dtool-lookup-server), rewritten with Vue 3,
+TypeScript and Vuetify. Renamed from dtool-lookup-webapp to dserver-webapp.
 
 Added
 ^^^^^
 
-- Dependency graph drawn with Vue Flow in a layered layout: datasets flow
-  left to right from the datasets they were derived from, with full names,
-  creator and date, the current dataset highlighted, zoom and pan controls.
-  Clicking a dataset opens it without replacing the search results.
-
+- Sign-in with OAuth2 through the dserver token generator plugin. The token
+  arrives in the URL fragment (or, in cookie-only mode, from the server
+  session), never in a query parameter. Logout ends the server session.
+  ``VUE_APP_OAUTH2_LOGIN_URL`` configures the login URL.
+- Optional authentication: ``VUE_APP_AUTH_ENABLED=false`` runs the webapp
+  against an open dserver without sign-in.
 - Approval of command-line logins (``dtool dserver login``): opening the webapp
   with ``?user_code=...`` shows, after logging in, a dialog to approve or deny
   the login (OAuth 2.0 device authorization flow of the dserver OAuth2 token
@@ -23,57 +27,55 @@ Added
 - The page names its dserver (``<meta name="dserver-url">``, from
   ``VUE_APP_DTOOL_LOOKUP_SERVER_URL``), so users can log in from the command
   line with the address of the webapp (``dtool dserver login <address>``).
-  The copied ``dtool cp`` commands use ``dserver://`` URIs with the webapp's
-  address and show the login command.
-- *Copy URI* buttons for storage locations and datasets, which copy the
-  ``dserver://`` URI (e.g. for ``dtool ls`` or ``dtool cp``).
+- Copyable ``dtool cp`` commands and *Copy URI* buttons for storage locations
+  and datasets, with ``dserver://`` URIs of the webapp's address (e.g. for
+  ``dtool ls`` or ``dtool cp``), and the login command.
+- Dependency graph drawn with Vue Flow in a layered layout: datasets flow
+  left to right from the datasets they were derived from, with full names,
+  creator and date, the current dataset highlighted, zoom and pan controls.
+  Clicking a dataset opens it without replacing the search results.
+- User management for administrators: users and admin rights, base URIs,
+  search and register permissions on base URIs (granted as soon as a base URI
+  is selected).
+- User menu with the user's display name (editable), a button to copy the
+  token, and optional downloads of ``dtool.json``/``dtool_readme.yml``
+  templates and an info dialog.
+- Editing of tags, annotations and the README; direct download of items
+  (with the dserver signed URL plugin).
+- Filters (facets) for storage locations, tags, creators and uploaders, and
+  the uploader of a dataset. Storage locations are listed right below the
+  Repository heading; all are selected by default.
+- Datasets show their UUID below their name; clicking the dataset icon
+  copies the URI.
+- Search with free text or a mongo query (JSON), sorting, pagination with a
+  selectable number of datasets per page, paginated item lists.
+- README shown as rendered YAML/JSON or as plain text, depending on the
+  server version.
+- Server health check with a "Server unavailable" notice; notifications.
 - Customizable landing page.
-- Logout button.
-- Search result pagniation.
-- Selection of entry number per page.
-- Version-dependent display of pagination.
-- Version-dependent display of README.yml content as clear text or as processed YAML/JSON.
-- A few simple unit tests.
-
+- Unit tests (Vitest).
 
 Changed
 ^^^^^^^
 
-- Built with Vite instead of Vue CLI (unmaintained): ``npm run serve`` (or
-  ``dev``), ``build`` and ``preview``. Configuration still comes from
-  ``VUE_APP_*`` environment variables and ``.env`` files, now read as
+- Renamed from dtool-lookup-webapp to dserver-webapp (GitHub repository,
+  npm package and the application directory). The Ansible deployment in
+  ``provision/`` keeps its role, nginx configuration and installation path.
+- Vue 3 with the Composition API and TypeScript; Vuetify 4 (Material 3)
+  instead of Bootstrap; Pinia instead of Vuex.
+- Talks to dserver's remodelled REST API through the dserver-client package.
+- Built with Vite instead of Vue CLI: ``npm run serve`` (or ``dev``),
+  ``build`` and ``preview``. Configuration still comes from ``VUE_APP_*``
+  environment variables and ``.env`` files, now read as
   ``import.meta.env.VUE_APP_*``. ``index.html`` moved to the project root.
-  Babel, core-js and the webpack toolchain are gone. The dependency graph
-  and the user management are loaded when first opened.
-- Dependencies updated to their latest versions, among them Vuetify 4,
-  Pinia 4, pinia-plugin-persistedstate 4, Vite 8, Vitest 5, jsdom 31,
-  TypeScript 7 and ESLint 10. Buttons and tabs follow Vuetify 4 (Material 3)
-  in using sentence case instead of upper case.
+  The dependency graph and the user management are loaded when first opened.
 - TypeScript 7 is installed side by side with TypeScript 6
   (``@typescript/typescript6``, aliased as ``typescript``): vue-tsc and
   typescript-eslint need TypeScript's JavaScript API, which TypeScript 7.0
   does not have. ``npm run type-check`` runs vue-tsc and TypeScript 7's tsc.
-- ESLint runs directly (``npm run lint``, flat config ``eslint.config.mjs``).
+- ESLint 10 runs directly (``npm run lint``, flat config
+  ``eslint.config.mjs``).
 - Node.js 22.22 or 24.15 and later are required (CI: 22, 24, 26).
-- User management: a search or register permission is granted as soon as a
-  base URI is selected; the "+" button is gone.
-- Locations are listed right below the Repository heading, always open,
-  above the dataset counts and the other filters. Datasets of the selected
-  locations are shown; all are selected by default, and at least one stays
-  selected.
-- Datasets show their UUID below their name (instead of a separate URI
-  card); clicking the dataset icon copies the URI.
-- Updated from bootstrap-vue-3 to bootstap-vue-next
-- Adapted routes to remodeled dserver REST API.
-
-
-Deprecated
-^^^^^^^^^^
-
-
-Removed
-^^^^^^^
-
 
 Fixed
 ^^^^^
@@ -83,14 +85,11 @@ Fixed
   ``readme_parsed.derived_from.uuid``. It now uses the server's dependency
   keys; the panel for editing them is gone.
 - Dependency graphs with more than 10 datasets were cut off (first page only).
-
-- No search box on login screen.
+- Pagination of mongo query results.
+- Responses of outdated searches replaced newer results; transient errors
+  ended the session.
 - ``dserver://`` URIs of datasets and storage locations in copied ``dtool``
   commands lacked the storage location or the server.
-
-Security
-^^^^^^^^
-
 
 [0.4.0] - 2020-05-29
 --------------------

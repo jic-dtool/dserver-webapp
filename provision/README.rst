@@ -1,11 +1,11 @@
-Provisining a lookup webapp server
-----------------------------------
+Provisioning a dserver webapp server
+------------------------------------
 
-- Go into the dtool-lookup-webapp directory::
+- Go into the dserver-webapp directory::
 
-        cd ../dtool-lookup-webapp
+        cd ../dserver-webapp
 
-- Build the Vue project in dtool-lookup-webapp using::
+- Build the Vue project in dserver-webapp using::
 
         npm run build
 

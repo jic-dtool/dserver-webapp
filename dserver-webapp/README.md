@@ -1,4 +1,4 @@
-# dtool-lookup-webapp
+# dserver-webapp
 
 ## Project setup (for development)
 ```
@@ -7,7 +7,7 @@ npm install
 
 ### Configure endpoints
 
-Create a file `.env` in the `dtool-lookup-webapp` directory with the following contents:
+Create a file `.env` in the `dserver-webapp` directory with the following contents:
 ```
 VUE_APP_DTOOL_LOOKUP_SERVER_URL="http://localhost:5000"
 VUE_APP_DTOOL_LOOKUP_SERVER_TOKEN_GENERATOR_URL="http://localhost:5001/token"

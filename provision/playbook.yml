@@ -1,6 +1,6 @@
 ---
 
-- name: provision dtool-lookup-webapp
+- name: provision dserver-webapp
   hosts: all
 
   vars_files:

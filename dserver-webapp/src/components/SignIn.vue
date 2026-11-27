@@ -262,8 +262,8 @@ const fourthContainerResources: ResourceLink[] = import.meta.env
   ? JSON.parse(import.meta.env.VUE_APP_FOURTH_CONTAINER_RESOURCES)
   : [
       {
-        text: "dtool-lookup-webapp repository",
-        url: "https://github.com/jic-dtool/dtool-lookup-webapp",
+        text: "dserver-webapp repository",
+        url: "https://github.com/jic-dtool/dserver-webapp",
       },
       {
         text: "dserver REST API documentation",

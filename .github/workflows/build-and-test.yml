@@ -1,4 +1,4 @@
-name: dtool-lookup-webapp-build-and-test
+name: dserver-webapp-build-and-test
 
 on:
   push:
@@ -24,11 +24,11 @@ jobs:
       - name: Check out webapp
         uses: actions/checkout@v7
         with:
-          path: dtool-lookup-webapp
+          path: dserver-webapp
 
       # dserver-client is a local file:../../dserver-client-js dependency, so the
       # client repo must sit one level above the webapp's package.json. Checking
-      # the webapp out under dtool-lookup-webapp/ and the client under
+      # the webapp out under dserver-webapp/ and the client under
       # dserver-client-js/ makes file:../../dserver-client-js resolve correctly.
       - name: Check out dserver-client-js
         uses: actions/checkout@v7
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          cache-dependency-path: dtool-lookup-webapp/dtool-lookup-webapp/package-lock.json
+          cache-dependency-path: dserver-webapp/dserver-webapp/package-lock.json
 
       # Build the client first so its dist/ exists before the webapp links it.
       # dserver-client-js ships TypeScript sources only (main/types point to
@@ -53,21 +53,21 @@ jobs:
           npm run build
 
       - name: Install dependencies
-        working-directory: dtool-lookup-webapp/dtool-lookup-webapp
+        working-directory: dserver-webapp/dserver-webapp
         run: npm ci
 
       - name: Lint
-        working-directory: dtool-lookup-webapp/dtool-lookup-webapp
+        working-directory: dserver-webapp/dserver-webapp
         run: npm run lint
 
       - name: Type-check
-        working-directory: dtool-lookup-webapp/dtool-lookup-webapp
+        working-directory: dserver-webapp/dserver-webapp
         run: npm run type-check
 
       - name: Build
-        working-directory: dtool-lookup-webapp/dtool-lookup-webapp
+        working-directory: dserver-webapp/dserver-webapp
         run: npm run build
 
       - name: Run tests
-        working-directory: dtool-lookup-webapp/dtool-lookup-webapp
+        working-directory: dserver-webapp/dserver-webapp
         run: npm run test:unit

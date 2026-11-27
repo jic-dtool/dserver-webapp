@@ -1,15 +1,15 @@
-dtool lookup webapp
-===================
+dserver webapp
+==============
 
-.. image:: https://github.com/jic-dtool/dtool-lookup-webapp/actions/workflows/build-and-test.yml/badge.svg
-    :target: https://github.com/jic-dtool/dtool-lookup-webapp/actions/workflows/build-and-test.yml
-    :alt: dtool-lookup-webapp build and test
+.. image:: https://github.com/jic-dtool/dserver-webapp/actions/workflows/build-and-test.yml/badge.svg
+    :target: https://github.com/jic-dtool/dserver-webapp/actions/workflows/build-and-test.yml
+    :alt: dserver-webapp build and test
 
 .. image:: https://img.shields.io/badge/License-MIT-yellow.svg
     :target: https://opensource.org/licenses/MIT
     :alt: License: MIT
 
-- GitHub repository: https://github.com/jic-dtool/dtool-lookup-webapp
+- GitHub repository: https://github.com/jic-dtool/dserver-webapp
 - License: MIT License (https://opensource.org/licenses/MIT)
 
 This web application allows querying and displaying information about datasets stored in one or more base URIs.
@@ -25,13 +25,13 @@ The web application requires two other web services:
 Setup
 -----
 
-Navigate to the `dtool-lookup-webapp` directory:
+Navigate to the `dserver-webapp` directory:
 
 .. code-block:: bash
 
-    cd dtool-lookup-webapp
+    cd dserver-webapp
 
-Create a `.env` file in the `dtool-lookup-webapp` directory with the following contents:
+Create a `.env` file in the `dserver-webapp` directory with the following contents:
 
 .. code-block:: bash
 
@@ -66,7 +66,7 @@ Customization options for the landing page are available through the following e
    VUE_APP_THIRD_CONTAINER_MESSAGE=Some notes on how to gain access.
    VUE_APP_FOURTH_CONTAINER_HEADING=Docs
    VUE_APP_FOURTH_CONTAINER_INTRO=Some notes on how to find help. The following list may contain an arbitrary number of links.
-   VUE_APP_FOURTH_CONTAINER_RESOURCES=[{"text": "dtool-lookup-webapp repository", "url": "https://github.com/jic-dtool/dtool-lookup-webapp"}]
+   VUE_APP_FOURTH_CONTAINER_RESOURCES=[{"text": "dserver-webapp repository", "url": "https://github.com/jic-dtool/dserver-webapp"}]
    VUE_APP_LANDING_PAGE_ICON_PATH=/icons/128x128/dtool_logo.png
 
 Customization options for the upper right corner drop-down menu in the app are available through the following environment variables in the `.env` file:
@@ -81,7 +81,7 @@ Customization options for the upper right corner drop-down menu in the app are a
    VUE_APP_INFO_CONTENT="<tt>dtool.json</tt> is you local <i>dtool</i> client's configuration file. Place it at <tt>~/.config/dtool/dtool.json</tt>, where <tt>~</tt> is your home directoy, and create the directories if they do not exist.<br /><br /><tt>dtool_readme.yml</tt> is the metadata template used for documenting your datasets. Place it anywhere, but make sure that the entry <tt>DTOOL_README_TEMPLATE_FPATH</tt> within above's dtool.json points to the correct absolute path of your <tt>dtool_readme.yml</tt>. See <a href="https://dtool.readthedocs.io/en/latest/configuring_a_custom_readme_template.html" target="_blank" rel="noopener noreferrer">Configuring a custom README template</a> of <a href="https://dtool.readthedocs.io" target="_blank" rel="noopener noreferrer"></i>dtool</i>'s documentation</a>."
 
 All paths provided in these environment variables must be relative to this
-repository's `dtool-lookup-webapp/public` as root. 
+repository's `dserver-webapp/public` as root. 
 Setting any of the `VUE_APP_OFFER_DTOOL_README_YAML_DOWNLOAD`,
 `VUE_APP_OFFER_DTOOL_JSON_DOWNLOAD`, `VUE_APP_SHOW_INFO_MENU_ENTRY` to `true`
 will show a download button for a `dtool_readme.yml` template, for a
@@ -102,7 +102,7 @@ To start a development server:
 
 .. code-block:: bash
 
-    cd dtool-lookup-webapp
+    cd dserver-webapp
     npm run serve
 
 Building for Production
@@ -112,7 +112,7 @@ To compile the application into a static single-page website:
 
 .. code-block:: bash
 
-    cd dtool-lookup-webapp
+    cd dserver-webapp
     npm run build
 
 Tests, lint and type checking
@@ -120,7 +120,7 @@ Tests, lint and type checking
 
 .. code-block:: bash
 
-    cd dtool-lookup-webapp
+    cd dserver-webapp
     npm run test:unit    # Vitest
     npm run lint         # ESLint
     npm run type-check   # vue-tsc (TypeScript 6 API) and tsc (TypeScript 7)
@@ -144,4 +144,4 @@ To address issues with dependencies in a broken installation:
 Additional Information
 ----------------------
 
-For more details on development and build processes, refer to the `README.md` file within the `dtool-lookup-webapp` directory. For deployment instructions using Ansible, consult the `provision/README.rst`.
+For more details on development and build processes, refer to the `README.md` file within the `dserver-webapp` directory. For deployment instructions using Ansible, consult the `provision/README.rst`.
