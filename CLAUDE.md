@@ -7,16 +7,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This repo has a **nested structure**. The git root contains docs (`README.rst`,
 `SPEC.rst`, `CHANGELOG.rst`), the Ansible `provision/` deployment, and a
 placeholder `package-lock.json`. The **actual Vue application lives in the
-`dtool-lookup-webapp/` subdirectory** — all `npm` commands must run from there.
+`dserver-webapp/` subdirectory** — all `npm` commands must run from there.
 
 ```
-dtool-lookup-webapp/           # git root (docs, provision/)
-└── dtool-lookup-webapp/       # the Vue 3 SPA — cd here for all dev work
+dserver-webapp/       # git root (docs, provision/)
+└── dserver-webapp/   # the Vue 3 SPA — cd here for all dev work
 ```
 
 ## Commands
 
-All commands run from the inner `dtool-lookup-webapp/` directory:
+All commands run from the inner `dserver-webapp/` directory:
 
 ```bash
 npm install              # install deps
@@ -42,7 +42,7 @@ installed side by side with the TypeScript 6 API (`typescript` aliased to
 ## Configuration (`.env`)
 
 The app is configured **at build time** via `VUE_APP_*` environment variables
-(or `dtool-lookup-webapp/.env`, not committed), exposed by Vite as
+(or `dserver-webapp/.env`, not committed), exposed by Vite as
 `import.meta.env.VUE_APP_*` (`envPrefix` in `vite.config.ts`). Key vars:
 
 - `VUE_APP_DTOOL_LOOKUP_SERVER_URL` — dserver base URL (default `http://localhost:5000`)

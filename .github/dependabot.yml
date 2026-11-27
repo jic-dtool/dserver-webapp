@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/dtool-lookup-webapp" # Location of package manifests
+    directory: "/dserver-webapp" # Location of package manifests
     schedule:
       interval: "daily"
 

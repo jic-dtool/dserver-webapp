@@ -1,5 +1,5 @@
-dtool-lookup-webapp specification
-=================================
+dserver-webapp specification
+============================
 
 .. |date| date::
 
@@ -69,7 +69,7 @@ Binary Beatrice is a bioinformatician. She needs to redo an analysis from a
 project called ``cancer-cure-42`` from nine months ago.  To do this she needs
 access to her old data.
 
-1. She clicks on the ``dtool-lookup-webapp`` bookmark in her web browser
+1. She clicks on the ``dserver-webapp`` bookmark in her web browser
 2. She types the word ``cancer-cure-42`` into the search box and clicks the
    "Search" button
 3. Three hits are listed in a table with administrative and summary metadata
