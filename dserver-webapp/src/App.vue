@@ -397,6 +397,7 @@ import { useAuthStore } from "./stores/auth";
 import { useServerHealthStore } from "./stores/serverHealth";
 import { dserverApi } from "./services/dserverApi";
 import type { SearchQuery as DServerSearchQuery } from "./services/dserverApi";
+import { buildSearchQuery } from "./services/filterMatches";
 import { parsePaginationHeader } from "dserver-client";
 import type { Dataset, ConfigInfo } from "./types";
 
@@ -455,28 +456,7 @@ const mongoSearchURL = computed(() => {
   return lookup_url + "/mongo/query";
 });
 
-const searchQuery = computed<DServerSearchQuery>(() => {
-  const query: DServerSearchQuery = {};
-
-  if (store.free_text) {
-    query.free_text = store.free_text;
-  }
-
-  if (store.creator_usernames.length > 0) {
-    query.creator_usernames = store.creator_usernames;
-  }
-  if (store.base_uris.length > 0) {
-    query.base_uris = store.base_uris;
-  }
-  if (store.tags.length > 0) {
-    query.tags = store.tags;
-  }
-  if (store.uploaded_by.length > 0) {
-    query.uploaded_by = store.uploaded_by;
-  }
-
-  return query;
-});
+const searchQuery = computed<DServerSearchQuery>(() => buildSearchQuery(store));
 
 // The selected dataset: a search hit, or a dataset opened from the
 // dependency graph.
